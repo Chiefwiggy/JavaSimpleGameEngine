@@ -8,11 +8,10 @@ import java.util.Queue;
 
 public class AntFactory {
 
-    private ArrayList<Ant> liveAnts;
+    //private ArrayList<Ant> liveAnts;
     private Queue<Ant> antQueue;
 
     public AntFactory() {
-        liveAnts = new ArrayList<>();
         antQueue = new ArrayDeque<>();
     }
 
@@ -22,13 +21,11 @@ public class AntFactory {
             newAnt = new Ant();
         }
         newAnt.Initialize(x, y);
-        liveAnts.add(newAnt);
         return newAnt;
     }
 
     public void ReturnAnt(Ant deadAnt) {
         deadAnt.Deinitialize();
-        liveAnts.remove(deadAnt);
         antQueue.add(deadAnt);
     }
 }

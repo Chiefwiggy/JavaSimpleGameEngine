@@ -7,9 +7,6 @@ import Simulation.Managers.SimulationManager;
 
 public class MyFirstScene extends Scene {
 
-
-
-
     Background b;
     Ant a1, a2;
     @Override
