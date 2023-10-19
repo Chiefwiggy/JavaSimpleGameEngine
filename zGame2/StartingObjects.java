@@ -1,10 +1,11 @@
-package Simulation;
+package zGame2;
 
 import Helpers.Scene;
+import Simulation.MyFirstScene;
 
 public class StartingObjects {
     public Scene getStartingScene() {
         // PUT YOUR SCENE HERE
-        return new MyFirstScene();
+        return new Game2Scene();
     }
 }
