@@ -2,7 +2,7 @@
 
 This is a sample project I made for my brother. It's nothing special, but it's a very simplified game engine to teach him about design patterns.
 
-You do not require Maven/Gradle to compile. Within the Drivers folder, Driver.java contains the main function.
+You do not require Maven/Gradle to compile. Within the Engine.Drivers folder, Driver.java contains the main function.
 
 ## Game Objects
 
@@ -104,20 +104,16 @@ You can also register an alarm to go off at the conclusion of another alarm:
 
 ## Other Functions
 
-### GameManager.GetAntGame()
+- `EngineManager.GetDeltaTime() -> float` (Returns in seconds the time between frames)
+- `EngineManager.GetHeight() -> int` (gets window height)
+- `EngineManager.GetWidth() -> int` (gets window width)
 
-This function has three principal uses:
-- `GameManager.GetAntGame().getDeltaTime() -> float` (Returns in seconds the time between frames)
-- `GameManager.GetAntGame().getHeight() -> int` (gets window height)
-- `GameManager.GetAntGame().getWidth() -> int` (gets window width)
-
-This will be moved to private eventually, but just keeping it exposed for now in case other data is needed.
 
 ### Scene
 
 There is no Scene Management, but you will have to specify a scene in StartingObjects.java
 
-### Simulation
+### Simulation_EXAMPLE
 
 The simulation folder contains samples and examples, but please create your own package and scene to start a project.
 
