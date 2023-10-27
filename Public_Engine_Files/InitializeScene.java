@@ -7,6 +7,6 @@ import Simulation_EXAMPLE.MyFirstScene;
 public class InitializeScene {
     public Scene getStartingScene() {
         // PUT YOUR SCENE HERE
-        return new SampleScene();
+        return new MyFirstScene();
     }
 }
