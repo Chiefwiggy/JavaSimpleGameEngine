@@ -1,8 +1,8 @@
-package Game_Files;
+package Game_Files.GameObjects;
 
 import java.awt.*;
 
-import static Game_Files.Background.squareSize;
+import static Game_Files.GameObjects.Background.squareSize;
 
 public class Fish extends BoardEntity {
     public Fish(int x, int y) {

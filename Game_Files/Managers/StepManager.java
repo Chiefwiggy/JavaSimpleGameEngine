@@ -1,4 +1,4 @@
-package Game_Files;
+package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
 import Engine.Helpers.Keyboard;

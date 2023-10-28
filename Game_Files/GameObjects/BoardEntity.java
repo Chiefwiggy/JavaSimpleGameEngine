@@ -1,10 +1,11 @@
-package Game_Files;
+package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Managers.BoardEntityManager;
 
 import java.awt.*;
 
-import static Game_Files.Background.squareSize;
+import static Game_Files.GameObjects.Background.squareSize;
 
 public abstract class BoardEntity extends GameObject {
 
@@ -23,7 +24,7 @@ public abstract class BoardEntity extends GameObject {
     }
 
     public void Initialize(int x, int y, String species) {
-        GameManager.Register(this);
+        BoardEntityManager.Register(this);
         this.x = x;
         this.y = y;
         this.species = species;
@@ -32,7 +33,7 @@ public abstract class BoardEntity extends GameObject {
 
     public void Deinitialize() {
         drawObject.SubmitDrawDeregistration();
-        GameManager.Deregister(this);
+        BoardEntityManager.Deregister(this);
     }
 
     @Override

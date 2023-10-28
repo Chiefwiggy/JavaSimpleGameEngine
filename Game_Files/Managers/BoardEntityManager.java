@@ -1,67 +1,53 @@
-package Game_Files;
+package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Factories.EntityFactory;
+import Game_Files.GameObjects.BoardEntity;
 
-import static Game_Files.Background.BOARD_SIZE;
+import static Game_Files.GameObjects.Background.BOARD_SIZE;
 
+public class BoardEntityManager extends GameObject {
+    // BoardEntityManager. Responsible for spawning, despawning,
+    // registering, & deregistering entities. Will also contain our 2D array.
+    // Essentially it will deal with all array operations for our 2D array.
+    // I feel like this should be a singleton.
 
-public class GameManager extends GameObject {
+    private static BoardEntityManager instance;
 
-    private static GameManager instance;
-
-    private synchronized static GameManager getInstance() {
+    private synchronized static BoardEntityManager getInstance() {
         if (instance == null) {
-            instance = new GameManager();
+            instance = new BoardEntityManager();
         }
         return instance;
     }
 
-    public BoardEntity[][] gridSpaces;
-    public StepManager stepManager;
     public EntityFactory entityFactory;
-    public Background background;
+    public BoardEntity[][] gridSpaces;
 
-    public static void Initialize() {
-        getInstance()._Initialize();
-    }
+    public static void Initialize() { getInstance()._Initialize(); }
 
     private void _Initialize() {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
-        stepManager = new StepManager();
         entityFactory = new EntityFactory();
-        background = new Background();
-
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
-        gridSpaces[middle-1][middle] = Spawn(middle-1, middle, "Coral");
-        gridSpaces[middle][middle-1] = Spawn(middle, middle-1, "Coral");
-        gridSpaces[middle-1][middle-1] = Spawn(middle-1, middle-1, "Coral");
-        gridSpaces[middle][middle] = Spawn(middle, middle, "Coral");
+        Spawn(middle - 1, middle, "Coral");
+        Spawn(middle, middle - 1, "Coral");
+        Spawn(middle - 1, middle - 1, "Coral");
+        Spawn(middle, middle, "Coral");
 
         // Spawn 12 fish and 4 crocs
         int y = 0;
         String t = "Fish";
         for (int i = 0; i < 16; i++) {
-            if (i == BOARD_SIZE) { y = 1; } else if (i == 12) { t = "Croc"; }
-            gridSpaces[i % BOARD_SIZE][y] = Spawn(i % BOARD_SIZE, y, t);
+            if (i == BOARD_SIZE) {
+                y = 1;
+            } else if (i == 12) {
+                t = "Croc";
+            }
+            Spawn(i % BOARD_SIZE, y, t);
         }
         print2DArray();
-
-        // Potentially create an EntityHandler. Responsible for spawning, despawning,
-        // registering, & deregistering entities. Will also contain our 2D array.
-        // Essentially it will deal with all array operations for our 2D array.
-    }
-
-    public static void Step() {
-        getInstance()._Step();
-    }
-
-    private void _Step() {
-        // Do what it does every step: The following is temporary
-        System.out.println("Here");
-        int x = (int) (Math.random() * 9.9);
-        int y = (int) (Math.random() * 9.9);
-        gridSpaces[x][y] = Spawn(x, y, "Croc");
     }
 
     public static BoardEntity Spawn(int x, int y, String t) {
@@ -114,5 +100,4 @@ public class GameManager extends GameObject {
         }
         System.out.println(sb);
     }
-
 }

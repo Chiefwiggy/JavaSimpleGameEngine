@@ -1,4 +1,8 @@
-package Game_Files;
+package Game_Files.Factories;
+
+import Game_Files.GameObjects.BoardEntity;
+import Game_Files.GameObjects.Fish;
+import Game_Files.GameObjects.Crocodile;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

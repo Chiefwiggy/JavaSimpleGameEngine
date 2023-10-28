@@ -1,4 +1,4 @@
-package Game_Files;
+package Game_Files.GameObjects;
 
 import java.awt.*;
 import Engine.GameObjects.DrawObject;
