@@ -10,6 +10,7 @@ import static Game_Files.GameObjects.Background.squareSize;
 public class Fish extends BoardEntity {
     public Fish(Pair<Integer> xy) {
         super(xy, BoardEntities.FISH);
+        this.entitySizeDivisor = 3.0;
     }
 
     @Override

@@ -32,6 +32,7 @@ public class BoardEntityManager extends GameObject {
     private void _Initialize() {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
         entityFactory = new EntityFactory();
+
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
         Spawn(new Pair<>(middle - 1, middle), BoardEntities.CORAL);
@@ -58,6 +59,9 @@ public class BoardEntityManager extends GameObject {
     }
 
     private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
+        // Maybe this is where we should handle which entity gets spawned. NVM
+        // Factory makes more sense. This is essentially telling the factory that
+        // we need an entity of certain type, the factory is what actually creates it.
         return entityFactory.GetEntity(xy, species);
     }
 

@@ -10,6 +10,7 @@ import static Game_Files.GameObjects.Background.squareSize;
 public class Crocodile extends BoardEntity {
     public Crocodile(Pair<Integer> xy) {
         super(xy, BoardEntities.CROCODILE);
+        this.entitySizeDivisor = 1.5;
     }
 
     @Override

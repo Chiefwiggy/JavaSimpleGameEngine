@@ -18,8 +18,11 @@ public abstract class BoardEntity extends GameObject {
     public BoardEntity(Pair<Integer> xy, BoardEntities species) {
         this.xy = xy;
         this.species = species;
-        if (species == BoardEntities.CROCODILE) { this.entitySizeDivisor = 1.5; }
-        else { this.entitySizeDivisor = 3.0; }
+        // This code below is bad. Imagine if we had an infinite amount of
+        // Board entities? We need something that calls. Honestly this stuff
+        // Should go in the individual class. There's more to it tho.
+        //if (species == BoardEntities.CROCODILE) { this.entitySizeDivisor = 1.5; }
+        //else { this.entitySizeDivisor = 3.0; }
     }
 
     public void Initialize(Pair<Integer> xy, BoardEntities species) {
