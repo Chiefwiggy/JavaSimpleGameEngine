@@ -1,6 +1,8 @@
 package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Helpers.BoardEntities;
+import Game_Files.Helpers.Pair;
 import Game_Files.Managers.BoardEntityManager;
 
 import java.awt.*;
@@ -9,26 +11,22 @@ import static Game_Files.GameObjects.Background.squareSize;
 
 public abstract class BoardEntity extends GameObject {
 
-    public int x;
-    public int y;
-    public int drawX;
-    public int drawY;
-    public String species;
+    public Pair<Integer> xy;
+    public Pair<Integer> drawXY;
+    public BoardEntities species;
     public double entitySizeDivisor;
-    public BoardEntity(int x, int y, String species) {
-        this.x = x;
-        this.y = y;
+    public BoardEntity(Pair<Integer> xy, BoardEntities species) {
+        this.xy = xy;
         this.species = species;
-        if (species.equals("Croc")) { this.entitySizeDivisor = 1.5; }
+        if (species == BoardEntities.CROCODILE) { this.entitySizeDivisor = 1.5; }
         else { this.entitySizeDivisor = 3.0; }
     }
 
-    public void Initialize(int x, int y, String species) {
+    public void Initialize(Pair<Integer> xy, BoardEntities species) {
         BoardEntityManager.Register(this);
-        this.x = x;
-        this.y = y;
+        this.xy = xy;
         this.species = species;
-        if (!species.equals("Coral")) { drawObject.SubmitDrawRegistration(); }
+        if (species != BoardEntities.CORAL) { drawObject.SubmitDrawRegistration(); }
     }
 
     public void Deinitialize() {
@@ -38,8 +36,10 @@ public abstract class BoardEntity extends GameObject {
 
     @Override
     public void GameDraw(Graphics2D g2) {
-        drawX = convertGridToWorldSpace(x) - (int) (squareSize / this.entitySizeDivisor / 2);
-        drawY = convertGridToWorldSpace(y) - (int) (squareSize / this.entitySizeDivisor / 2);
+        drawXY = new Pair<>(
+        convertGridToWorldSpace(xy.get(0)) - (int) (squareSize / this.entitySizeDivisor / 2),
+        convertGridToWorldSpace(xy.get(1)) - (int) (squareSize / this.entitySizeDivisor / 2)
+        );
     }
 
     // Returns the center of the gridSpace

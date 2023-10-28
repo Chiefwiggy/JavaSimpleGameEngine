@@ -2,7 +2,10 @@ package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
 import Game_Files.Factories.EntityFactory;
+import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
+import Game_Files.Helpers.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import static Game_Files.GameObjects.Background.BOARD_SIZE;
 
@@ -31,31 +34,31 @@ public class BoardEntityManager extends GameObject {
         entityFactory = new EntityFactory();
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
-        Spawn(middle - 1, middle, "Coral");
-        Spawn(middle, middle - 1, "Coral");
-        Spawn(middle - 1, middle - 1, "Coral");
-        Spawn(middle, middle, "Coral");
+        Spawn(new Pair<>(middle - 1, middle), BoardEntities.CORAL);
+        Spawn(new Pair<>(middle, middle - 1), BoardEntities.CORAL);
+        Spawn(new Pair<>(middle - 1, middle - 1), BoardEntities.CORAL);
+        Spawn(new Pair<>(middle, middle), BoardEntities.CORAL);
 
         // Spawn 12 fish and 4 crocs
         int y = 0;
-        String t = "Fish";
+        BoardEntities species = BoardEntities.FISH;
         for (int i = 0; i < 16; i++) {
             if (i == BOARD_SIZE) {
                 y = 1;
             } else if (i == 12) {
-                t = "Croc";
+                species = BoardEntities.CROCODILE;
             }
-            Spawn(i % BOARD_SIZE, y, t);
+            Spawn(new Pair<>(i % BOARD_SIZE, y), species);
         }
         print2DArray();
     }
 
-    public static BoardEntity Spawn(int x, int y, String t) {
-        return getInstance()._Spawn(x, y, t);
+    public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
+        return getInstance()._Spawn(xy, species);
     }
 
-    private BoardEntity _Spawn(int x, int y, String t) {
-        return entityFactory.GetEntity(x, y, t);
+    private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
+        return entityFactory.GetEntity(xy, species);
     }
 
     public static void Register(BoardEntity entity) {
@@ -66,12 +69,12 @@ public class BoardEntityManager extends GameObject {
         getInstance()._Deregister(entity);
     }
 
-    private void _Register(@org.jetbrains.annotations.NotNull BoardEntity entity) {
-        gridSpaces[entity.x][entity.y] = entity;
+    private void _Register(@NotNull BoardEntity entity) {
+        gridSpaces[entity.xy.get(0)][entity.xy.get(1)] = entity;
     }
 
-    private void _Deregister(BoardEntity entity) {
-        gridSpaces[entity.x][entity.y] = null;
+    private void _Deregister(@NotNull BoardEntity entity) {
+        gridSpaces[entity.xy.get(0)][entity.xy.get(1)] = null;
     }
 
     // For Debugging
@@ -81,22 +84,22 @@ public class BoardEntityManager extends GameObject {
 
     private void _print2DArray() {
         StringBuilder sb = new StringBuilder();
-        String s;
-        for (int i = 0; i < gridSpaces[0].length; i++) {
+        BoardEntities species;
+        for (int j = 0; j < gridSpaces[0].length; j++) {
             sb.append("\n[ ");
-            for (BoardEntity[] gridSpace : gridSpaces) {
-                if (gridSpace[i] == null) {
-                    sb.append("null ");
+            for (int i = 0; i < gridSpaces.length; i++) {
+                if (gridSpaces[i][j] == null) {
+                    sb.append("  NULL   ");
                 } else {
-                    s = gridSpace[i].species;
-                    sb.append(s);
-                    if (!s.equals("Coral")) {
-                        sb.append(" ");
-                    }
+                    species = gridSpaces[i][j].species;
+                    if (species != BoardEntities.CROCODILE) { sb.append("  "); }
+                    sb.append(species);
+                    if (species == BoardEntities.FISH) { sb.append("   "); }
+                    else if (species == BoardEntities.CORAL) { sb.append("  "); }
                 }
-                sb.append(", ");
+                if (i == gridSpaces.length - 1) { sb.append(" ]"); }
+                else { sb.append(", "); }
             }
-            sb.append(gridSpaces[gridSpaces[0].length - 1][gridSpaces.length - 1]).append(" ]");
         }
         System.out.println(sb);
     }
