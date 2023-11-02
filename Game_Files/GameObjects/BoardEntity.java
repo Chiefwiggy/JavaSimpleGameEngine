@@ -12,7 +12,6 @@ import static Game_Files.GameObjects.Background.squareSize;
 public abstract class BoardEntity extends GameObject {
 
     public Pair<Integer> xy;
-    public Pair<Integer> drawXY;
     public double entitySizeDivisor;
     public Color color;
     public DrawMethod drawMethod;
@@ -34,12 +33,10 @@ public abstract class BoardEntity extends GameObject {
 
     @Override
     public void GameDraw(Graphics2D g2) {
-        drawXY = new Pair<>(
-        convertGridToWorldSpace(xy.get(0)) - (int) (squareSize / this.entitySizeDivisor / 2),
-        convertGridToWorldSpace(xy.get(1)) - (int) (squareSize / this.entitySizeDivisor / 2)
-        );
+        int drawX = convertGridToWorldSpace(xy.get(0)) - (int) (squareSize / this.entitySizeDivisor / 2);
+        int drawY = convertGridToWorldSpace(xy.get(1)) - (int) (squareSize / this.entitySizeDivisor / 2);
         g2.setColor(this.color);
-        drawMethod.fillShape(drawXY.get(0), drawXY.get(1), (int) (squareSize / entitySizeDivisor), (int) (squareSize / entitySizeDivisor));
+        drawMethod.fillShape(drawX, drawY, (int) (squareSize / entitySizeDivisor), (int) (squareSize / entitySizeDivisor));
     }
 
     // Returns the center of the gridSpace

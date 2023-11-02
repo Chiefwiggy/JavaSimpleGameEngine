@@ -19,6 +19,8 @@ public class EntityFactory {
     public BoardEntity GetEntity(Pair<Integer> xy, BoardEntities species) {
         BoardEntity newEntity = recycledEntities.poll();
         if (newEntity == null) {
+            // Possible using method refs??? I did this before looking into method references and
+            // lambdas. Will look into later if possible. Might still need some reflection, however.
             try {
                 Class<?> entitySubClass = Class.forName("Game_Files.GameObjects." + species.name());
                 Constructor<?> constructor = entitySubClass.getConstructor(Pair.class);
