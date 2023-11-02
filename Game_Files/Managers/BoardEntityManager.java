@@ -10,10 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import static Game_Files.GameObjects.Background.BOARD_SIZE;
 
 public class BoardEntityManager extends GameObject {
-    // BoardEntityManager. Responsible for spawning, despawning,
-    // registering, & deregistering entities. Will also contain our 2D array.
-    // Essentially it will deal with all array operations for our 2D array.
-    // I feel like this should be a singleton.
 
     private static BoardEntityManager instance;
 
@@ -35,19 +31,19 @@ public class BoardEntityManager extends GameObject {
 
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
-        Spawn(new Pair<>(middle - 1, middle), BoardEntities.CORAL);
-        Spawn(new Pair<>(middle, middle - 1), BoardEntities.CORAL);
-        Spawn(new Pair<>(middle - 1, middle - 1), BoardEntities.CORAL);
-        Spawn(new Pair<>(middle, middle), BoardEntities.CORAL);
+        Spawn(new Pair<>(middle - 1, middle), BoardEntities.Coral);
+        Spawn(new Pair<>(middle, middle - 1), BoardEntities.Coral);
+        Spawn(new Pair<>(middle - 1, middle - 1), BoardEntities.Coral);
+        Spawn(new Pair<>(middle, middle), BoardEntities.Coral);
 
         // Spawn 12 fish and 4 crocs
         int y = 0;
-        BoardEntities species = BoardEntities.FISH;
+        BoardEntities species = BoardEntities.Fish;
         for (int i = 0; i < 16; i++) {
             if (i == BOARD_SIZE) {
                 y = 1;
             } else if (i == 12) {
-                species = BoardEntities.CROCODILE;
+                species = BoardEntities.Crocodile;
             }
             Spawn(new Pair<>(i % BOARD_SIZE, y), species);
         }
@@ -59,9 +55,6 @@ public class BoardEntityManager extends GameObject {
     }
 
     private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
-        // Maybe this is where we should handle which entity gets spawned. NVM
-        // Factory makes more sense. This is essentially telling the factory that
-        // we need an entity of certain type, the factory is what actually creates it.
         return entityFactory.GetEntity(xy, species);
     }
 
@@ -88,18 +81,18 @@ public class BoardEntityManager extends GameObject {
 
     private void _print2DArray() {
         StringBuilder sb = new StringBuilder();
-        BoardEntities species;
+        String species;
         for (int j = 0; j < gridSpaces[0].length; j++) {
             sb.append("\n[ ");
             for (int i = 0; i < gridSpaces.length; i++) {
                 if (gridSpaces[i][j] == null) {
                     sb.append("  NULL   ");
                 } else {
-                    species = gridSpaces[i][j].species;
-                    if (species != BoardEntities.CROCODILE) { sb.append("  "); }
+                    species = gridSpaces[i][j].getClass().getName();
+                    if (!(species.equals(BoardEntities.Crocodile.name()))) { sb.append("  "); }
                     sb.append(species);
-                    if (species == BoardEntities.FISH) { sb.append("   "); }
-                    else if (species == BoardEntities.CORAL) { sb.append("  "); }
+                    if (species.equals(BoardEntities.Fish.name())) { sb.append("   "); }
+                    else if (species.equals(BoardEntities.Coral.name())) { sb.append("  "); }
                 }
                 if (i == gridSpaces.length - 1) { sb.append(" ]"); }
                 else { sb.append(", "); }

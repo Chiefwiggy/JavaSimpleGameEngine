@@ -4,12 +4,11 @@ import Game_Files.Helpers.Pair;
 
 import java.awt.*;
 
-public class Fish extends BoardEntity {
-
-    public Fish(Pair<Integer> xy) {
+public class Coral extends BoardEntity {
+    public Coral(Pair<Integer> xy) {
         super(xy);
-        this.entitySizeDivisor = 3.0;
-        this.color = new Color(0, 102, 204);
+        this.entitySizeDivisor = 1.0;
+        this.color = new Color(25, 0, 0);
     }
 
     @Override

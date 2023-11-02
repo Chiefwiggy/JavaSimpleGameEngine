@@ -1,9 +1,8 @@
 package Game_Files.Factories;
 
+import java.lang.reflect.*;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
-import Game_Files.GameObjects.Fish;
-import Game_Files.GameObjects.Crocodile;
 import Game_Files.Helpers.Pair;
 
 import java.util.ArrayDeque;
@@ -20,12 +19,16 @@ public class EntityFactory {
     public BoardEntity GetEntity(Pair<Integer> xy, BoardEntities species) {
         BoardEntity newEntity = recycledEntities.poll();
         if (newEntity == null) {
-            // Bad code below. If Else should be unnecessary.
-            if (species == BoardEntities.FISH) { newEntity = new Fish(xy); }
-            else { newEntity = new Crocodile(xy); }
+            try {
+                Class<?> entitySubClass = Class.forName("Game_Files.GameObjects." + species.name());
+                Constructor<?> constructor = entitySubClass.getConstructor(Pair.class);
+                newEntity = (BoardEntity) constructor.newInstance(xy);
+            } catch (Exception e) {
+                newEntity = new BoardEntity(xy) {}; // To avoid warning
+            }
             System.out.println("Entity was created");
         } else { System.out.println("Entity was recycled"); }
-        newEntity.Initialize(xy, species);
+        newEntity.Initialize(xy);
         return newEntity;
     }
 

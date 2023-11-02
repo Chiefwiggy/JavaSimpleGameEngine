@@ -1,8 +1,8 @@
 package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
-import Game_Files.Helpers.BoardEntities;
 import Game_Files.Helpers.Pair;
+import Game_Files.Interfaces.DrawMethod;
 import Game_Files.Managers.BoardEntityManager;
 
 import java.awt.*;
@@ -13,23 +13,18 @@ public abstract class BoardEntity extends GameObject {
 
     public Pair<Integer> xy;
     public Pair<Integer> drawXY;
-    public BoardEntities species;
     public double entitySizeDivisor;
-    public BoardEntity(Pair<Integer> xy, BoardEntities species) {
+    public Color color;
+    public DrawMethod drawMethod;
+
+    public BoardEntity(Pair<Integer> xy) {
         this.xy = xy;
-        this.species = species;
-        // This code below is bad. Imagine if we had an infinite amount of
-        // Board entities? We need something that calls. Honestly this stuff
-        // Should go in the individual class. There's more to it tho.
-        //if (species == BoardEntities.CROCODILE) { this.entitySizeDivisor = 1.5; }
-        //else { this.entitySizeDivisor = 3.0; }
     }
 
-    public void Initialize(Pair<Integer> xy, BoardEntities species) {
+    public void Initialize(Pair<Integer> xy) {
         BoardEntityManager.Register(this);
         this.xy = xy;
-        this.species = species;
-        if (species != BoardEntities.CORAL) { drawObject.SubmitDrawRegistration(); }
+        drawObject.SubmitDrawRegistration();
     }
 
     public void Deinitialize() {
@@ -43,6 +38,8 @@ public abstract class BoardEntity extends GameObject {
         convertGridToWorldSpace(xy.get(0)) - (int) (squareSize / this.entitySizeDivisor / 2),
         convertGridToWorldSpace(xy.get(1)) - (int) (squareSize / this.entitySizeDivisor / 2)
         );
+        g2.setColor(this.color);
+        drawMethod.fillShape(drawXY.get(0), drawXY.get(1), (int) (squareSize / entitySizeDivisor), (int) (squareSize / entitySizeDivisor));
     }
 
     // Returns the center of the gridSpace

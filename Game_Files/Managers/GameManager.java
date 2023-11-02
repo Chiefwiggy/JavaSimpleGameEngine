@@ -25,8 +25,8 @@ public class GameManager extends GameObject {
 
     private void _Initialize() {
         background = new Background();
-        BoardEntityManager.Initialize();
         stepManager = new StepManager();
+        BoardEntityManager.Initialize();
     }
 
     public static void Step() {
@@ -37,7 +37,7 @@ public class GameManager extends GameObject {
         // Do what it does every step: The following is temporary
         System.out.println("Here");
         Pair<Integer> xy = new Pair<>((int) (Math.random() * 9.9), (int) (Math.random() * 9.9));
-        BoardEntityManager.Spawn(xy, BoardEntities.CROCODILE);
+        BoardEntityManager.Spawn(xy, BoardEntities.Crocodile);
     }
 
 }
