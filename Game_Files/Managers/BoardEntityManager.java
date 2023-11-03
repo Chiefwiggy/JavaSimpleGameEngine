@@ -7,6 +7,9 @@ import Game_Files.GameObjects.BoardEntity;
 import Game_Files.Helpers.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import static Game_Files.GameObjects.Background.BOARD_SIZE;
 
 public class BoardEntityManager extends GameObject {
@@ -23,31 +26,59 @@ public class BoardEntityManager extends GameObject {
     public EntityFactory entityFactory;
     public BoardEntity[][] gridSpaces;
 
+    // Could use something like a hash table instead. We will see. Might not even need it.
+
+    // Maybe do a check spaces every time we need to invoke the random function.
+    // That will make it so that we can just have taken spaces as a local variable
+    // whenever we need it. Keeps space complexity small. Also makes it so that we
+    // don't have to constantly track the array list and remove pairs when some entity despawns.
+    public ArrayList<Pair<Integer>> takenSpaces;
+
     public static void Initialize() { getInstance()._Initialize(); }
 
     private void _Initialize() {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
         entityFactory = new EntityFactory();
 
+        takenSpaces = new ArrayList<>();
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
-        Spawn(new Pair<>(middle - 1, middle), BoardEntities.Coral);
-        Spawn(new Pair<>(middle, middle - 1), BoardEntities.Coral);
-        Spawn(new Pair<>(middle - 1, middle - 1), BoardEntities.Coral);
-        Spawn(new Pair<>(middle, middle), BoardEntities.Coral);
+        int[] spots = { 1, 0, 1, 0 };
+        Pair<Integer> pair;
+        for (int i = 0; i < 4; i++) {
+            pair = new Pair<>(middle - spots[i], middle - spots[(i + 1) % 3]);
+            takenSpaces.add(pair);
+            Spawn(pair, BoardEntities.Coral);
+        }
 
         // Spawn 12 fish and 4 crocs
-        int y = 0;
-        BoardEntities species = BoardEntities.Fish;
+        int randX, randY;
         for (int i = 0; i < 16; i++) {
-            if (i == BOARD_SIZE) {
-                y = 1;
-            } else if (i == 12) {
-                species = BoardEntities.Crocodile;
-            }
-            Spawn(new Pair<>(i % BOARD_SIZE, y), species);
+            randX = getRandomWithExclusion(0, BOARD_SIZE-1, takenSpaces, 0);
+            randY = getRandomWithExclusion(0, BOARD_SIZE-1, takenSpaces, 1);
+            pair = new Pair<>(randX, randY);
+            takenSpaces.add(pair);
+            if (i < 12) { Spawn(pair, BoardEntities.Fish); }
+            else { Spawn(pair, BoardEntities.Crocodile); }
+            System.out.println(pair.toString());
+            printPairs();
+            print2DArray();
         }
-        print2DArray();
+    }
+
+    public static int getRandomWithExclusion(int start, int end, ArrayList<Pair<Integer>> exclude, int idx) {
+        System.out.println(end - start + 1 - exclude.size());
+        int random = start + (new Random()).nextInt(end - start + 1 - exclude.size());
+        for (Pair<Integer> ex : exclude) { if (random < ex.get(idx)) { break; } random++; }
+        return random;
+    }
+
+    public void printPairs() {
+        StringBuilder sb = new StringBuilder();
+        for (Pair<Integer> pair : takenSpaces) {
+            sb.append(pair.toString()).append(" ");
+        }
+        System.out.println(sb.toString());
     }
 
     public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
@@ -62,12 +93,12 @@ public class BoardEntityManager extends GameObject {
         getInstance()._Register(entity);
     }
 
-    public static void Deregister(BoardEntity entity) {
-        getInstance()._Deregister(entity);
-    }
-
     private void _Register(@NotNull BoardEntity entity) {
         gridSpaces[entity.xy.get(0)][entity.xy.get(1)] = entity;
+    }
+
+    public static void Deregister(BoardEntity entity) {
+        getInstance()._Deregister(entity);
     }
 
     private void _Deregister(@NotNull BoardEntity entity) {
@@ -86,9 +117,9 @@ public class BoardEntityManager extends GameObject {
             sb.append("\n[ ");
             for (int i = 0; i < gridSpaces.length; i++) {
                 if (gridSpaces[i][j] == null) {
-                    sb.append("  NULL   ");
+                    sb.append("  Null   ");
                 } else {
-                    species = gridSpaces[i][j].getClass().getName();
+                    species = gridSpaces[i][j].getClass().getName().replace("Game_Files.GameObjects.", "");
                     if (!(species.equals(BoardEntities.Crocodile.name()))) { sb.append("  "); }
                     sb.append(species);
                     if (species.equals(BoardEntities.Fish.name())) { sb.append("   "); }

@@ -15,4 +15,8 @@ public class Pair<E> {
         else { return this.b; }
     }
 
+    public String toString() {
+        return "Pair: (" + this.a + ", " + this.b + ")";
+    }
+
 }
