@@ -29,16 +29,12 @@ public class GridManager extends GameObject {
     public static void Initialize() { getInstance()._Initialize(); }
     private void _Initialize() {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
-        multimap = new Multimap<>();
-        PopulateMultimap();
+        multimap = InitializeMultimap();
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
         int[] spots = { 1, 0, 1, 0 };
-        Pair<Integer> pair;
         for (int i = 0; i < 4; i++) {
-            pair = new Pair<>(middle - spots[i], middle - spots[(i + 1) % 3]);
-            multimap.Remove(pair.get(0), pair.get(1));
-            EntityManager.Spawn(pair, BoardEntities.Coral);
+            FillGridSpace(middle - spots[i], middle - spots[(i + 1) % 3], BoardEntities.Coral);
         }
 
         // Spawn 12 fish and 4 crocs
@@ -48,11 +44,19 @@ public class GridManager extends GameObject {
             randX = currentKeys.get(new Random().nextInt(0, currentKeys.size()));
             yValues = multimap.GetList(randX);
             randY = yValues.get(new Random().nextInt(0, yValues.size()));
-            pair = new Pair<>(randX, randY);
-            multimap.Remove(randX, randY);
-            if (i < 12) { EntityManager.Spawn(pair, BoardEntities.Fish); }
-            else { EntityManager.Spawn(pair, BoardEntities.Crocodile); }
+            if (i < 12) { FillGridSpace(randX, randY, BoardEntities.Fish); }
+            else { FillGridSpace(randX, randY, BoardEntities.Crocodile); }
         }
+    }
+
+    public static void FillGridSpace(int x, int y, BoardEntities entity) {
+        getInstance()._FillGridSpace(x, y, entity);
+    }
+
+    public void _FillGridSpace(int x, int y, BoardEntities entity) {
+        Pair<Integer> pair = new Pair<>(x, y);
+        multimap.Remove(x, y);
+        EntityManager.Spawn(pair, entity);
     }
 
     public static void Register(BoardEntity entity) {
@@ -71,9 +75,13 @@ public class GridManager extends GameObject {
         gridSpaces[entity.xy.get(0)][entity.xy.get(1)] = null;
     }
 
-    public static void PopulateMultimap() { getInstance()._PopulateMultimap(); }
-    private void _PopulateMultimap() {
-        for (int i = 0; i < 10; i++) { for (int j = 0; j < 10; j++) { multimap.Add(i, j); } }
+    public static Multimap<Integer, Integer> InitializeMultimap() {
+        return getInstance()._InitializeMultimap();
+    }
+    private Multimap<Integer, Integer> _InitializeMultimap() {
+        Multimap<Integer, Integer> m = new Multimap<>();
+        for (int i = 0; i < 10; i++) { for (int j = 0; j < 10; j++) { m.Add(i, j); } }
+        return m;
     }
 
     // For Debugging
