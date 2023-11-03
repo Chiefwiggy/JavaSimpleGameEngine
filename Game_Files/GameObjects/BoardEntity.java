@@ -3,7 +3,7 @@ package Game_Files.GameObjects;
 import Engine.GameObjects.GameObject;
 import Game_Files.Helpers.Pair;
 import Game_Files.Interfaces.DrawMethod;
-import Game_Files.Managers.BoardEntityManager;
+import Game_Files.Managers.GridManager;
 
 import java.awt.*;
 
@@ -21,14 +21,14 @@ public abstract class BoardEntity extends GameObject {
     }
 
     public void Initialize(Pair<Integer> xy) {
-        BoardEntityManager.Register(this);
+        GridManager.Register(this);
         this.xy = xy;
         drawObject.SubmitDrawRegistration();
     }
 
     public void Deinitialize() {
         drawObject.SubmitDrawDeregistration();
-        BoardEntityManager.Deregister(this);
+        GridManager.Deregister(this);
     }
 
     @Override
