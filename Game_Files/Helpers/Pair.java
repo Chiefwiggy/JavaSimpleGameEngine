@@ -15,6 +15,7 @@ public class Pair<E> {
         else { return this.b; }
     }
 
+    @Override
     public String toString() {
         return "Pair: (" + this.a + ", " + this.b + ")";
     }

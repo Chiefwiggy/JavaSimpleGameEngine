@@ -4,6 +4,7 @@ import Engine.GameObjects.GameObject;
 import Game_Files.Factories.EntityFactory;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
+import Game_Files.Helpers.Multimap;
 import Game_Files.Helpers.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,53 +33,43 @@ public class BoardEntityManager extends GameObject {
     // That will make it so that we can just have taken spaces as a local variable
     // whenever we need it. Keeps space complexity small. Also makes it so that we
     // don't have to constantly track the array list and remove pairs when some entity despawns.
-    public ArrayList<Pair<Integer>> takenSpaces;
+    //public ArrayList<Pair<Integer>> takenSpaces;
+    public Multimap<Integer, Integer> multimap;
 
     public static void Initialize() { getInstance()._Initialize(); }
 
     private void _Initialize() {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
         entityFactory = new EntityFactory();
+        multimap = new Multimap<>();
 
-        takenSpaces = new ArrayList<>();
+        PopulateMultimap();
         // Fill 4 middle spots with coral
         int middle = BOARD_SIZE / 2;
         int[] spots = { 1, 0, 1, 0 };
         Pair<Integer> pair;
         for (int i = 0; i < 4; i++) {
             pair = new Pair<>(middle - spots[i], middle - spots[(i + 1) % 3]);
-            takenSpaces.add(pair);
+            multimap.Remove(pair.get(0), pair.get(1));
             Spawn(pair, BoardEntities.Coral);
         }
 
         // Spawn 12 fish and 4 crocs
-        int randX, randY;
+        int randX; int randY; ArrayList<Integer> yValues; ArrayList<Integer> currentKeys;
         for (int i = 0; i < 16; i++) {
-            randX = getRandomWithExclusion(0, BOARD_SIZE-1, takenSpaces, 0);
-            randY = getRandomWithExclusion(0, BOARD_SIZE-1, takenSpaces, 1);
+            currentKeys = multimap.GetKeys();
+            randX = currentKeys.get(new Random().nextInt(0, currentKeys.size()));
+            yValues = multimap.GetList(randX);
+            randY = yValues.get(new Random().nextInt(0, yValues.size()));
             pair = new Pair<>(randX, randY);
-            takenSpaces.add(pair);
+            multimap.Remove(randX, randY);
             if (i < 12) { Spawn(pair, BoardEntities.Fish); }
             else { Spawn(pair, BoardEntities.Crocodile); }
-            System.out.println(pair.toString());
-            printPairs();
-            print2DArray();
         }
     }
 
-    public static int getRandomWithExclusion(int start, int end, ArrayList<Pair<Integer>> exclude, int idx) {
-        System.out.println(end - start + 1 - exclude.size());
-        int random = start + (new Random()).nextInt(end - start + 1 - exclude.size());
-        for (Pair<Integer> ex : exclude) { if (random < ex.get(idx)) { break; } random++; }
-        return random;
-    }
-
-    public void printPairs() {
-        StringBuilder sb = new StringBuilder();
-        for (Pair<Integer> pair : takenSpaces) {
-            sb.append(pair.toString()).append(" ");
-        }
-        System.out.println(sb.toString());
+    public void PopulateMultimap() {
+        for (int i = 0; i < 10; i++) { for (int j = 0; j < 10; j++) { multimap.Add(i, j); } }
     }
 
     public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
