@@ -31,8 +31,7 @@ public class GridManager extends GameObject {
         gridSpaces = new BoardEntity[BOARD_SIZE][BOARD_SIZE];
         multimap = InitializeMultimap();
         // Fill 4 middle spots with coral
-        int middle = BOARD_SIZE / 2;
-        int[] spots = { 1, 0, 1, 0 };
+        int middle = BOARD_SIZE / 2; int[] spots = { 1, 0, 1, 0 };
         for (int i = 0; i < 4; i++) {
             FillGridSpace(middle - spots[i], middle - spots[(i + 1) % 3], BoardEntities.Coral);
         }
@@ -84,6 +83,7 @@ public class GridManager extends GameObject {
         return m;
     }
 
+    /*
     // For Debugging
     public static void print2DArray() {
         getInstance()._print2DArray();
@@ -110,5 +110,6 @@ public class GridManager extends GameObject {
         }
         System.out.println(sb);
     }
+     */
 
 }

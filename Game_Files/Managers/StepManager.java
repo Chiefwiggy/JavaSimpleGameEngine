@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 
 public class StepManager extends GameObject {
     private boolean hasPressed = false;
+    private int stepCounter;
 
     public StepManager() {
         updateObject.SubmitUpdateRegistration();

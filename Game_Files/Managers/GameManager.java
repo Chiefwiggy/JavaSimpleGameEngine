@@ -35,6 +35,21 @@ public class GameManager extends GameObject {
     }
 
     private void _Step() {
+        // This should just call move for every object in the queue
+
+
+
+
+        // Fish move
+        // Crocs check adjacent cells for fish
+            // If yes, consume and move into spot
+            // Else, move to non-occupied space
+                // Note: can be any adjacent space (including diagonal)
+        // Query fish count
+
+
+
+
         // Do what it does every step: The following is temporary
         System.out.println("Here");
         Pair<Integer> xy = new Pair<>((int) (Math.random() * 9.9), (int) (Math.random() * 9.9));
