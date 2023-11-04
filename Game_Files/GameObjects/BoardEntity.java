@@ -1,6 +1,7 @@
 package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Helpers.BoardEntities;
 import Game_Files.Helpers.Pair;
 import Game_Files.Interfaces.DrawMethod;
 import Game_Files.Managers.GridManager;
@@ -9,20 +10,23 @@ import java.awt.*;
 
 import static Game_Files.GameObjects.Background.squareSize;
 
-public abstract class BoardEntity extends GameObject {
+public abstract class BoardEntity extends GameObject implements Comparable<BoardEntity> {
 
     public Pair<Integer> xy;
+    public BoardEntities species;
     public double entitySizeDivisor;
     public Color color;
     public DrawMethod drawMethod;
 
-    public BoardEntity(Pair<Integer> xy) {
+    public BoardEntity(Pair<Integer> xy, BoardEntities species) {
         this.xy = xy;
+        this.species = species;
     }
 
-    public void Initialize(Pair<Integer> xy) {
+    public void Initialize(Pair<Integer> xy, BoardEntities species) {
         GridManager.Register(this);
         this.xy = xy;
+        this.species = species;
         drawObject.SubmitDrawRegistration();
     }
 
@@ -30,6 +34,8 @@ public abstract class BoardEntity extends GameObject {
         drawObject.SubmitDrawDeregistration();
         GridManager.Deregister(this);
     }
+
+    public void Move() {}
 
     @Override
     public void GameDraw(Graphics2D g2) {
@@ -42,6 +48,11 @@ public abstract class BoardEntity extends GameObject {
     // Returns the center of the gridSpace
     protected int convertGridToWorldSpace(int n) {
         return (int) squareSize * n + ((int) squareSize / 2);
+    }
+
+    @Override
+    public int compareTo(BoardEntity entity) {
+        return this.species.comparisonValue - entity.species.comparisonValue;
     }
 
 }

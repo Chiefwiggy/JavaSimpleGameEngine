@@ -8,8 +8,9 @@ import Game_Files.Helpers.Pair;
 
 import java.util.PriorityQueue;
 
-// Solely in charge of spawning and despawning entities. Anything related
-// to the grid will be handled by the GridManager class.
+// Solely in charge of spawning and despawning entities, as well as any actions
+// done by entities as a whole. Anything related to the grid will be handled by
+// the GridManager class.
 public class EntityManager extends GameObject {
 
     private static EntityManager instance;
@@ -21,33 +22,39 @@ public class EntityManager extends GameObject {
         return instance;
     }
 
+    public static void Initialize() { getInstance()._Initialize(); }
+    public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
+        return getInstance()._Spawn(xy, species);
+    }
+    public static void Despawn(BoardEntity entity) { getInstance()._Despawn(entity); }
+
+    public static void MoveAll() { getInstance()._MoveAll(); }
+    public static PriorityQueue<BoardEntity> GetQueue() { return getInstance().priorityQueue; }
+
     public EntityFactory entityFactory;
     public PriorityQueue<BoardEntity> priorityQueue;
 
-    public static void Initialize() { getInstance()._Initialize(); }
+    public EntityManager() {}
 
     private void _Initialize() {
         entityFactory = new EntityFactory();
-        priorityQueue = new PriorityQueue<>();
-    }
-
-    public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
-        return getInstance()._Spawn(xy, species);
+        priorityQueue = new PriorityQueue<>(BoardEntity::compareTo);
     }
 
     private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
         BoardEntity entity = entityFactory.GetEntity(xy, species);
-        priorityQueue.add(entity);
+        if (species != BoardEntities.CORAL) { priorityQueue.add(entity); }
         return entity;
-    }
-
-    public static void Despawn(BoardEntity entity) {
-        getInstance()._Despawn(entity);
     }
 
     private void _Despawn(BoardEntity entity) {
         entityFactory.RecycleEntity(entity);
         priorityQueue.remove(entity);
+    }
+
+    private void _MoveAll() {
+        System.out.println("Start moving all entities in queue");
+        priorityQueue.forEach(BoardEntity::Move);
     }
 
 }

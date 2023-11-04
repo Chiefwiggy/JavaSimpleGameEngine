@@ -3,7 +3,6 @@ package Game_Files.Managers;
 import Engine.GameObjects.GameObject;
 import Game_Files.GameObjects.Background;
 import Game_Files.Helpers.BoardEntities;
-import Game_Files.Helpers.Pair;
 
 public class GameManager extends GameObject {
 
@@ -35,6 +34,10 @@ public class GameManager extends GameObject {
     }
 
     private void _Step() {
+        EntityManager.GetQueue().forEach(entity -> System.out.println(entity.species));
+        //EntityManager.GetQueue().forEach(entity -> entity.Move());
+        // Instead we do
+        EntityManager.MoveAll();
         // This should just call move for every object in the queue
 
 
@@ -52,8 +55,7 @@ public class GameManager extends GameObject {
 
         // Do what it does every step: The following is temporary
         System.out.println("Here");
-        Pair<Integer> xy = new Pair<>((int) (Math.random() * 9.9), (int) (Math.random() * 9.9));
-        EntityManager.Spawn(xy, BoardEntities.Crocodile);
+        //GridManager.FillGridSpace((int) (Math.random() * 9.9), (int) (Math.random() * 9.9), BoardEntities.CROCODILE);
     }
 
 }

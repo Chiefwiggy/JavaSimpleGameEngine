@@ -1,6 +1,7 @@
 package Game_Files.Factories;
 
 import java.lang.reflect.*;
+
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
 import Game_Files.Helpers.Pair;
@@ -22,15 +23,16 @@ public class EntityFactory {
             // Possible using method refs??? I did this before looking into method references and
             // lambdas. Will look into later if possible. Might still need some reflection, however.
             try {
-                Class<?> entitySubClass = Class.forName("Game_Files.GameObjects." + species.name());
+                String name = species.name().toLowerCase();
+                name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                Class<?> entitySubClass = Class.forName("Game_Files.GameObjects." + name);
                 Constructor<?> constructor = entitySubClass.getConstructor(Pair.class);
                 newEntity = (BoardEntity) constructor.newInstance(xy);
-            } catch (Exception e) {
-                newEntity = new BoardEntity(xy) {}; // To avoid warning
-            }
+            } catch (Exception ignored) {}
             System.out.println("Entity was created");
         } else { System.out.println("Entity was recycled"); }
-        newEntity.Initialize(xy);
+        assert newEntity != null;
+        newEntity.Initialize(xy, species);
         return newEntity;
     }
 

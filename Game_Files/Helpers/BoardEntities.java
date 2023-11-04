@@ -1,7 +1,11 @@
 package Game_Files.Helpers;
 
 public enum BoardEntities {
-    Crocodile,
-    Fish,
-    Coral
+    CORAL(0),
+    FISH(1),
+    CROCODILE(2);
+
+    public final int comparisonValue;
+    BoardEntities(int i) { this.comparisonValue = i; }
+
 }
