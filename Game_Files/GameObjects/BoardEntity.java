@@ -13,10 +13,11 @@ import static Game_Files.GameObjects.Background.squareSize;
 public abstract class BoardEntity extends GameObject implements Comparable<BoardEntity> {
 
     public Pair<Integer> xy;
-    public BoardEntities species;
-    public double entitySizeDivisor;
-    public Color color;
-    public DrawMethod drawMethod;
+    protected BoardEntities species;
+    protected double entitySizeDivisor;
+    protected int comparisonValue;
+    protected Color color;
+    protected DrawMethod drawMethod;
 
     public BoardEntity(Pair<Integer> xy, BoardEntities species) {
         this.xy = xy;
@@ -52,7 +53,7 @@ public abstract class BoardEntity extends GameObject implements Comparable<Board
 
     @Override
     public int compareTo(BoardEntity entity) {
-        return this.species.comparisonValue - entity.species.comparisonValue;
+        return this.comparisonValue - entity.comparisonValue;
     }
 
 }

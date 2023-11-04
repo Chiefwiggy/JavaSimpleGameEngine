@@ -10,6 +10,7 @@ public class Coral extends BoardEntity {
     public Coral(Pair<Integer> xy) {
         super(xy, BoardEntities.CORAL);
         this.entitySizeDivisor = 1.0;
+        this.comparisonValue = 0;
         this.color = new Color(25, 0, 0);
     }
 

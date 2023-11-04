@@ -1,11 +1,16 @@
 package Game_Files.Helpers;
 
-public enum BoardEntities {
-    CORAL(0),
-    FISH(1),
-    CROCODILE(2);
+import Game_Files.GameObjects.Coral;
+import Game_Files.GameObjects.Fish;
+import Game_Files.GameObjects.Crocodile;
+import Game_Files.Interfaces.EntityConstructor;
 
-    public final int comparisonValue;
-    BoardEntities(int i) { this.comparisonValue = i; }
+public enum BoardEntities {
+    CORAL(Coral::new),
+    FISH(Fish::new),
+    CROCODILE(Crocodile::new);
+
+    public final EntityConstructor constructor;
+    BoardEntities(EntityConstructor constructor) { this.constructor = constructor; }
 
 }

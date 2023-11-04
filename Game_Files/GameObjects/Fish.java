@@ -7,12 +7,12 @@ import Game_Files.Managers.GridManager;
 import java.awt.*;
 import java.util.ArrayList;
 
-@SuppressWarnings("unused")
 public class Fish extends BoardEntity {
 
     public Fish(Pair<Integer> xy) {
         super(xy, BoardEntities.FISH);
         this.entitySizeDivisor = 3.0;
+        this.comparisonValue = 1;
         this.color = new Color(0, 102, 204);
     }
 
