@@ -2,7 +2,8 @@ package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
 import Game_Files.GameObjects.Background;
-import Game_Files.Helpers.BoardEntities;
+
+import java.util.Random;
 
 public class GameManager extends GameObject {
 
@@ -17,6 +18,7 @@ public class GameManager extends GameObject {
 
     public StepManager stepManager;
     public Background background;
+    public static final Random random = new Random();
 
     public static void Initialize() {
         getInstance()._Initialize();
@@ -34,6 +36,9 @@ public class GameManager extends GameObject {
     }
 
     private void _Step() {
+        // Firstly, EntityManager should spawn fish if fish count meets requirements
+
+
         //EntityManager.GetQueue().forEach(entity -> System.out.println(entity.species));
         //EntityManager.GetQueue().forEach(entity -> entity.Move());
         // Instead we do

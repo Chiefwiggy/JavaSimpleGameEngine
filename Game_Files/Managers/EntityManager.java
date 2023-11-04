@@ -28,7 +28,6 @@ public class EntityManager extends GameObject {
     }
     public static void Despawn(BoardEntity entity) { getInstance()._Despawn(entity); }
     public static void MoveAll() { getInstance()._MoveAll(); }
-    public static PriorityQueue<BoardEntity> GetQueue() { return getInstance().priorityQueue; }
 
     public EntityFactory entityFactory;
     public PriorityQueue<BoardEntity> priorityQueue;

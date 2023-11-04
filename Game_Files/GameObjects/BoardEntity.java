@@ -12,22 +12,19 @@ import static Game_Files.GameObjects.Background.squareSize;
 
 public abstract class BoardEntity extends GameObject implements Comparable<BoardEntity> {
 
-    public Pair<Integer> xy;
-    protected BoardEntities species;
+    protected Pair<Integer> xy;
     protected double entitySizeDivisor;
     protected int comparisonValue;
     protected Color color;
     protected DrawMethod drawMethod;
 
-    public BoardEntity(Pair<Integer> xy, BoardEntities species) {
+    public BoardEntity(Pair<Integer> xy) {
         this.xy = xy;
-        this.species = species;
     }
 
-    public void Initialize(Pair<Integer> xy, BoardEntities species) {
+    public void Initialize(Pair<Integer> xy) {
         GridManager.Register(this);
         this.xy = xy;
-        this.species = species;
         drawObject.SubmitDrawRegistration();
     }
 
@@ -35,6 +32,9 @@ public abstract class BoardEntity extends GameObject implements Comparable<Board
         drawObject.SubmitDrawDeregistration();
         GridManager.Deregister(this);
     }
+
+    public Pair<Integer> GetCoords() { return this.xy; }
+    public void SetCoords(Pair<Integer> xy) { this.xy = xy; }
 
     public void Move() {}
 

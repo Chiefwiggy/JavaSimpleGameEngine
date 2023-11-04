@@ -21,7 +21,7 @@ public class EntityFactory {
             newEntity = species.constructor.construct(xy);
             System.out.println("Entity was created");
         } else { System.out.println("Entity was recycled"); }
-        newEntity.Initialize(xy, species);
+        newEntity.Initialize(xy);
         return newEntity;
     }
 
