@@ -5,7 +5,6 @@ import Game_Files.Helpers.Pair;
 
 import java.awt.*;
 
-@SuppressWarnings("unused")
 public class Coral extends BoardEntity {
     public Coral(Pair<Integer> xy) {
         super(xy, BoardEntities.CORAL);

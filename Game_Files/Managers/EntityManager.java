@@ -55,6 +55,7 @@ public class EntityManager extends GameObject {
         System.out.println("Start moving all entities in queue");
         // Might have to make a copy of queue, dequeue from that, then remove
         // entities as necessary, but I'm not sure yet.
+        //priorityQueue.forEach(System.out::println);
         priorityQueue.forEach(BoardEntity::Move);
     }
 

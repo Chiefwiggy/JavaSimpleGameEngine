@@ -10,9 +10,6 @@ public class Pair<E> {
         this.b = b;
     }
 
-    public E get(int idx) {
-        if (idx == 0) { return this.a; }
-        else { return this.b; }
-    }
+    public E get(int idx) { if (idx == 0) { return this.a; } else { return this.b; } }
 
 }
