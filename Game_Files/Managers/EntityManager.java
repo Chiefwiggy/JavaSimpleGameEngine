@@ -27,7 +27,6 @@ public class EntityManager extends GameObject {
         return getInstance()._Spawn(xy, species);
     }
     public static void Despawn(BoardEntity entity) { getInstance()._Despawn(entity); }
-
     public static void MoveAll() { getInstance()._MoveAll(); }
     public static PriorityQueue<BoardEntity> GetQueue() { return getInstance().priorityQueue; }
 
@@ -54,6 +53,8 @@ public class EntityManager extends GameObject {
 
     private void _MoveAll() {
         System.out.println("Start moving all entities in queue");
+        // Might have to make a copy of queue, dequeue from that, then remove
+        // entities as necessary.
         priorityQueue.forEach(BoardEntity::Move);
     }
 

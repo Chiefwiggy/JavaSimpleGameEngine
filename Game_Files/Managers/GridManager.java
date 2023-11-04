@@ -67,11 +67,15 @@ public class GridManager extends GameObject {
         int[] spots = { 0, 1, 0, -1 }; int checks = 4;
         if (diagonal) { spots = new int[]{ 0, 1, -1, 1, 1, -1, -1, 0, -1 }; checks = 9; }
         ArrayList<Pair<Integer>> availableSpots = new ArrayList<>();
-        int x = xy.get(0); int y = xy.get(1); ArrayList<Integer> yValues;
+        int x = xy.get(0); int y = xy.get(1); int xNew; int yNew;
+        ArrayList<Integer> yValues;
         for (int i = 0; i < checks; i++) {
-            yValues = adjacencyMap.GetList(x);
-            if (yValues != null && yValues.contains(y)) {
-                availableSpots.add(new Pair<>(x+spots[i], y+spots[spots.length-i-1]));
+            xNew = x+spots[i]; yNew = y+spots[spots.length-i-1];
+            yValues = adjacencyMap.GetList(xNew);
+            if (yValues != null && yValues.contains(yNew)) {
+                if ((0 <= xNew && xNew < BOARD_SIZE) && (0 <= yNew && yNew < BOARD_SIZE)) {
+                    availableSpots.add(new Pair<>(xNew, yNew));
+                }
             }
         }
         return availableSpots;

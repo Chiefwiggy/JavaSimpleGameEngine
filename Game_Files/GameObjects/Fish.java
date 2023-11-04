@@ -18,19 +18,11 @@ public class Fish extends BoardEntity {
 
     @Override
     public void Move() {
-        // Pick random spot around that is not occupied
-        // Otherwise, stay in current spot
-
-        // I'm thinking we gather available spots, and then choose randomly from there.
-        // For spots Up (x, y-1), Right (x+1, y), Down (x, y+1), Left(x-1, y)
-
-        // We will have our GridManager tell us available spots based on our
-        // x, y position. Something like the following method declaration:
-        // public ArrayList<Pair<Integer>> GetAvailableAdjacentSpots(Pair<Integer> xy)
-        // Then we just randomly choose one of the returned spots.
-        System.out.println("Fish is moving");
         ArrayList<Pair<Integer>> availableSpots = GridManager.GetAvailableAdjacentSpots(this.xy, false);
-        availableSpots.forEach(System.out::println);
+        /*System.out.println("Fish is moving");
+        StringBuilder sb = new StringBuilder(String.format("Fish at (%s, %s) can move to spots: ", this.xy.get(0), this.xy.get(1)));
+        availableSpots.forEach(pair -> sb.append(String.format("(%s, %s) ", pair.get(0), pair.get(1))));
+        System.out.println(sb);*/
     }
 
 
