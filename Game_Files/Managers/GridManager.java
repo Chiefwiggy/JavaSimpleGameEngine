@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 import static Game_Files.GameObjects.Background.BOARD_SIZE;
 
@@ -27,6 +26,7 @@ public class GridManager extends GameObject {
 
     public static void Initialize() { getInstance()._Initialize(); }
     public static void FillGridSpace(int x, int y, BoardEntities entity) { getInstance()._FillGridSpace(x, y, entity); }
+    public static void ClearGridSpace(Pair<Integer> xy) { getInstance()._ClearGridSpace(xy); }
     public static void Register(@NotNull BoardEntity entity) { getInstance()._Register(entity); }
     public static void Deregister(@NotNull BoardEntity entity) { getInstance()._Deregister(entity); }
     public static ArrayList<Pair<Integer>> GetAvailableAdjacentSpots(Pair<Integer> xy, boolean diagonal, boolean checkFish) {
@@ -96,6 +96,10 @@ public class GridManager extends GameObject {
     private void _FillGridSpace(int x, int y, BoardEntities entity) {
         Pair<Integer> pair = new Pair<>(x, y);
         EntityManager.Spawn(pair, entity);
+    }
+
+    private void _ClearGridSpace(Pair<Integer> xy) {
+        EntityManager.Despawn(gridSpaces[xy.get(0)][xy.get(1)]);
     }
 
     private void _Register(@NotNull BoardEntity entity) {

@@ -2,10 +2,13 @@ package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
 import Game_Files.Factories.EntityFactory;
+import Game_Files.GameObjects.Crocodile;
+import Game_Files.GameObjects.Fish;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
 import Game_Files.Helpers.Pair;
 
+import java.util.Iterator;
 import java.util.PriorityQueue;
 
 // Solely in charge of spawning and despawning entities, as well as any actions
@@ -51,11 +54,35 @@ public class EntityManager extends GameObject {
     }
 
     private void _MoveAll() {
-        System.out.println("Start moving all entities in queue");
-        // Might have to make a copy of queue, dequeue from that, then remove
-        // entities as necessary, but I'm not sure yet.
-        //priorityQueue.forEach(System.out::println);
-        priorityQueue.forEach(BoardEntity::Move);
+        // Need to fix issue where we add dead fish to new queue
+        System.out.println("<Start of moving all entities in queue>");
+        PriorityQueue<BoardEntity> newPriorityQueue = new PriorityQueue<>(BoardEntity::compareTo);
+        Iterator<BoardEntity> iterator = priorityQueue.iterator();
+        BoardEntity currentEntity = iterator.next();
+        while(currentEntity.getClass().equals(Fish.class)) {
+            newPriorityQueue.add(currentEntity);
+            currentEntity.Move();
+            iterator.remove();
+            currentEntity = iterator.next();
+        }
+        System.out.println("<<After all fish have moved>>");
+        priorityQueue.forEach(System.out::println);
+        System.out.println("<<Before all crocs move>>");
+        iterator = priorityQueue.iterator();
+        currentEntity = iterator.next();
+        newPriorityQueue.add(currentEntity);
+        while(iterator.hasNext()) {
+            System.out.println("HERE");
+            currentEntity.Move();
+            currentEntity = iterator.next();
+            newPriorityQueue.add(currentEntity);
+        }
+        System.out.println("<<<Compare this>>>");
+        priorityQueue.forEach(System.out::println);
+        priorityQueue = newPriorityQueue;
+        System.out.println("<<<To this>>>");
+        priorityQueue.forEach(System.out::println);
+        System.out.println("<End of moving all entities in queue>");
     }
 
 }
