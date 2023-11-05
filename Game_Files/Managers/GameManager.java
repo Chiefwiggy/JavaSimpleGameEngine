@@ -36,6 +36,7 @@ public class GameManager extends GameObject {
     }
 
     private void _Step() {
+        System.out.println("HERE");
         // Firstly, EntityManager should spawn fish if fish count meets requirements
 
 

@@ -54,35 +54,25 @@ public class EntityManager extends GameObject {
     }
 
     private void _MoveAll() {
-        // Need to fix issue where we add dead fish to new queue
+        // Crocs seem to be replacing fish in the main priorityQueue
+        // Also, step is not activating every [ SPACEBAR ] click. This may just be lag.
         System.out.println("<Start of moving all entities in queue>");
-        PriorityQueue<BoardEntity> newPriorityQueue = new PriorityQueue<>(BoardEntity::compareTo);
-        Iterator<BoardEntity> iterator = priorityQueue.iterator();
+        priorityQueue.forEach(System.out::println);
+        PriorityQueue<BoardEntity> tempQueue = new PriorityQueue<>(priorityQueue);
+        Iterator<BoardEntity> iterator = tempQueue.iterator();
         BoardEntity currentEntity = iterator.next();
         while(currentEntity.getClass().equals(Fish.class)) {
-            newPriorityQueue.add(currentEntity);
             currentEntity.Move();
             iterator.remove();
             currentEntity = iterator.next();
         }
-        System.out.println("<<After all fish have moved>>");
-        priorityQueue.forEach(System.out::println);
-        System.out.println("<<Before all crocs move>>");
-        iterator = priorityQueue.iterator();
+        iterator = tempQueue.iterator();
         currentEntity = iterator.next();
-        newPriorityQueue.add(currentEntity);
         while(iterator.hasNext()) {
-            System.out.println("HERE");
             currentEntity.Move();
             currentEntity = iterator.next();
-            newPriorityQueue.add(currentEntity);
         }
-        System.out.println("<<<Compare this>>>");
         priorityQueue.forEach(System.out::println);
-        priorityQueue = newPriorityQueue;
-        System.out.println("<<<To this>>>");
-        priorityQueue.forEach(System.out::println);
-        System.out.println("<End of moving all entities in queue>");
     }
 
 }
