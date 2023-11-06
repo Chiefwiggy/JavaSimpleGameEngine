@@ -39,7 +39,7 @@ public class Ant extends GameObject implements FactoryObject {
     public Ant() {
         super();
         System.out.println("CREATED NEW ANT");
-        drawObject.SetRenderer("text");
+        SetRenderer("pixel");
     }
     @Override
     public void GameDraw(Graphics2D g2) {
@@ -53,21 +53,22 @@ public class Ant extends GameObject implements FactoryObject {
 
         g2.drawImage(current_sp.GetSprite(currentAnimation), (int)x, (int)y, 150, 150, null);
 
+
     }
 
     @Override
     public void GameUpdate() {
         if ((int)goalX != (int)x) {
-            x += Math.signum(goalX - x)*Math.min(speed* EngineManager.GetDeltaTime(), Math.abs(goalX - x));
+            x += Math.signum(goalX - x)*Math.min(speed*EngineManager.GetDeltaTime(), Math.abs(goalX - x));
         }
         if ((int)goalY != (int)y) {
-            y += Math.signum(goalY - y)*Math.min(speed* EngineManager.GetDeltaTime(), Math.abs(goalY - y));
+            y += Math.signum(goalY - y)*Math.min(speed*EngineManager.GetDeltaTime(), Math.abs(goalY - y));
         }
 
 
     }
 
-    public void Move() {
+    public void JumpingForJoy() {
         goalX += 70*Math.signum(0.5 - Math.random());
         goalY += 70*Math.signum(0.5 - Math.random());
     }
@@ -81,6 +82,7 @@ public class Ant extends GameObject implements FactoryObject {
         updateObject.SubmitUpdateRegistration();
         //alarmObject.SubmitAlarmRegistration(12*CONSTANTS.SECOND, ALARM_ID.ALARM_0);
         alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_3);
+
         lastTime = System.nanoTime();
         sp_idle = SpriteSheetManager.Get("adventurer_idle");
         sp_jump = SpriteSheetManager.Get("adventurer_jump");

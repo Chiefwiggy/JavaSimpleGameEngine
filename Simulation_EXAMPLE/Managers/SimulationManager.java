@@ -72,6 +72,7 @@ public class SimulationManager extends GameObject {
             System.out.println("STEP");
             for (Ant ant : ants) {
                 ant.Jump();
+                ant.JumpingForJoy();
             }
             alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND, ALARM_ID.ALARM_0);
             hasPressed = true;
