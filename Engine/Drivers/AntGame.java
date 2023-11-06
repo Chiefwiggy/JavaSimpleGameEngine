@@ -9,6 +9,10 @@ import java.awt.image.BufferedImage;
 public class AntGame extends JComponent {
 
 
+    public AntGame(JPanel panelRef) {
+        jPanelRef = panelRef;
+    }
+    private final JPanel jPanelRef;
     private Graphics2D g2;
     private BufferedImage image;
 
@@ -22,7 +26,9 @@ public class AntGame extends JComponent {
 
     private float deltaTime = 0;
 
+
     public float getDeltaTime() {return deltaTime;}
+    public JPanel getJPanelRef() {return jPanelRef;}
 
     public void start() {
         width = getWidth();

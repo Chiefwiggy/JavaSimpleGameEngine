@@ -33,7 +33,7 @@ public class SimulationManager extends GameObject {
 
     private void _Initialize() {
         updateObject.SubmitUpdateRegistration();
-        alarmObject.SubmitAlarmRegistration(5 * CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(1 * CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_1);
         hasPressed = false;
         ants = new ArrayList<>();
         antFactory = new AntFactory();
@@ -70,9 +70,9 @@ public class SimulationManager extends GameObject {
         if (!hasPressed & Keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
             System.out.println("STEP");
             for (Ant ant : ants) {
-                ant.Move();
+                ant.Jump();
             }
-            alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/2, AlarmObjectManager.ALARM_ID.ALARM_0);
+            alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_0);
             hasPressed = true;
         }
     }

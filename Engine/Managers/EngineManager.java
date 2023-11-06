@@ -9,6 +9,7 @@ import Engine.Helpers.Multimap;
 import Engine.Helpers.Scene;
 import Public_Engine_Files.InitializeScene;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class EngineManager {
@@ -65,6 +66,8 @@ public class EngineManager {
     public static int GetHeight() {return getInstance().antGame.getHeight();}
     public static float GetDeltaTime() {return getInstance().antGame.getDeltaTime();}
 
+    public static JPanel GetDrawPanel() {return getInstance().antGame.getJPanelRef();}
+
 
     private void _Start(AntGame ref) {
 
@@ -74,6 +77,7 @@ public class EngineManager {
         alarmManager = new AlarmObjectManager();
         startingObjects = new InitializeScene();
         currentScene = startingObjects.getStartingScene();
+        startingObjects.LoadAssets();
         currentScene.Initialize();
         antGame = ref;
     }

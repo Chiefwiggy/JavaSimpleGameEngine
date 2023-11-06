@@ -32,7 +32,7 @@ public class Driver {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(true);
-        AntGame antGame = new AntGame();
+        AntGame antGame = new AntGame(jPanel);
         jFrame.add(antGame);
         jFrame.addWindowListener(new WindowAdapter() {
             @Override

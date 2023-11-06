@@ -13,10 +13,12 @@ public abstract class DrawObject extends GraphicsObject {
     private DrawRegistrationCommand rCmd;
     private DrawDeregistrationCommand drCmd;
 
+
     public DrawObject() {
         registrationState = RegistrationState.CURRENTLY_DEREGISTERED;
         rCmd = new DrawRegistrationCommand(this);
         drCmd = new DrawDeregistrationCommand(this);
+        image = null;
     }
 
 

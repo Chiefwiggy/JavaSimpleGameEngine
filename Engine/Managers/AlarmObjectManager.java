@@ -82,7 +82,6 @@ public class AlarmObjectManager {
     }
 
     public void Deregister(Multimap.MultimapIterator iter) {
-        //System.out.println(iter);
         timeline.Remove(iter);
     }
 
