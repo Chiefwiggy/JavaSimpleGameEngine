@@ -4,7 +4,6 @@ import Engine.Helpers.Scene;
 import Engine.Rendering.DrawSettings;
 import Engine.ResourceManagement.ImageManager;
 import Engine.ResourceManagement.SpriteSheetManager;
-import Game_Files.SampleScene;
 import Simulation_EXAMPLE.CustomRenderer.TextRenderer;
 import Simulation_EXAMPLE.MyFirstScene;
 

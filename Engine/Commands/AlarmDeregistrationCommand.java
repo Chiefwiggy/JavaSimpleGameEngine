@@ -2,12 +2,13 @@ package Engine.Commands;
 
 import Engine.GameObjects.AlarmObject;
 import Engine.Managers.AlarmObjectManager;
+import Engine.Misc.ALARM_ID;
 
 public class AlarmDeregistrationCommand extends RegistrationCommand {
 
     private AlarmObject pAlarm;
-    private AlarmObjectManager.ALARM_ID al_id;
-    public AlarmDeregistrationCommand(AlarmObject aRef, AlarmObjectManager.ALARM_ID al_id) {
+    private ALARM_ID al_id;
+    public AlarmDeregistrationCommand(AlarmObject aRef, ALARM_ID al_id) {
         pAlarm = aRef;
         this.al_id = al_id;
     }

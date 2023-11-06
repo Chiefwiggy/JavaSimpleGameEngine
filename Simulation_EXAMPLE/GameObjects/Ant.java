@@ -5,6 +5,7 @@ import Engine.Helpers.CONSTANTS;
 import Engine.Helpers.Keyboard;
 import Engine.Managers.AlarmObjectManager;
 import Engine.Managers.EngineManager;
+import Engine.Misc.ALARM_ID;
 import Engine.ResourceManagement.ImageManager;
 import Engine.ResourceManagement.SpriteSheet;
 import Engine.ResourceManagement.SpriteSheetManager;
@@ -78,8 +79,8 @@ public class Ant extends GameObject implements FactoryObject {
         this.goalY = y;
         drawObject.SubmitDrawRegistration();
         updateObject.SubmitUpdateRegistration();
-        //alarmObject.SubmitAlarmRegistration(12*CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_0);
-        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, AlarmObjectManager.ALARM_ID.ALARM_1);
+        //alarmObject.SubmitAlarmRegistration(12*CONSTANTS.SECOND, ALARM_ID.ALARM_0);
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_1);
         lastTime = System.nanoTime();
         sp_idle = SpriteSheetManager.Get("adventurer_idle");
         sp_jump = SpriteSheetManager.Get("adventurer_jump");
@@ -121,7 +122,7 @@ public class Ant extends GameObject implements FactoryObject {
                 currentAnimation = 0;
             }
         }
-        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/15, AlarmObjectManager.ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/15, ALARM_ID.ALARM_1);
     }
 
 }

@@ -75,7 +75,7 @@ public class Peanut extends GameObject {
   //can call this in any function.
   public void SetDespawn() {
     // register ALARM_0 to go off in DESTROY_TIME seconds.
-    alarmObject.SetAlarmRegistration(DESTROY_TIME, AlarmObjectManager.ALARM_ID.ALARM_0);
+    alarmObject.SetAlarmRegistration(DESTROY_TIME, ALARM_ID.ALARM_0);
   }
 
   @Override
@@ -98,7 +98,7 @@ You can also register an alarm to go off at the conclusion of another alarm:
 ```java
   @Override
   public void GameAlarm0() {
-      alarmObject.SetAlarmRegistration(DESTROY_TIME, AlarmObjectManager.ALARM_ID.ALARM_0);
+      alarmObject.SetAlarmRegistration(DESTROY_TIME, ALARM_ID.ALARM_0);
   }
 ```
 

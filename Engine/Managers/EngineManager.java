@@ -7,6 +7,7 @@ import Engine.GameObjects.DrawObject;
 import Engine.GameObjects.UpdateObject;
 import Engine.Helpers.Multimap;
 import Engine.Helpers.Scene;
+import Engine.Misc.ALARM_ID;
 import Engine.Rendering.DrawSettings;
 import Public_Engine_Files.InitializeScene;
 
@@ -54,7 +55,7 @@ public class EngineManager {
         getInstance().updateManager.Deregister(uob);
     }
 
-    public static Multimap.MultimapIterator Register(long t, AlarmObjectManager.ALARM_ID id, AlarmObject aob) { return getInstance().alarmManager.Register(t, id, aob); }
+    public static Multimap.MultimapIterator Register(long t, ALARM_ID id, AlarmObject aob) { return getInstance().alarmManager.Register(t, id, aob); }
 
     public static void Deregister(Multimap.MultimapIterator it) {
         getInstance().alarmManager.Deregister(it);
