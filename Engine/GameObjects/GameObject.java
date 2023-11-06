@@ -1,5 +1,8 @@
 package Engine.GameObjects;
 
+import Engine.Misc.ALARM_ID;
+import Engine.Rendering.DrawSettings;
+
 import java.awt.*;
 
 public abstract class GameObject {
@@ -45,6 +48,39 @@ public abstract class GameObject {
         public void Alarm2() {
             GameAlarm2();
         }
+
+        @Override
+        public void Alarm3() {
+            GameAlarm3();
+        }
+    }
+
+    protected final void SetRenderer(String key) {
+        drawObject.SetRenderer(key);
+    }
+
+    protected final void SubmitAlarmRegistration(long time, ALARM_ID id) {
+        alarmObject.SubmitAlarmRegistration(time, id);
+    }
+
+    protected final void SubmitAlarmDeregistration(ALARM_ID id) {
+        alarmObject.SubmitAlarmDeregistration(id);
+    }
+
+    protected final void SubmitDrawRegistration() {
+        drawObject.SubmitDrawRegistration();
+    }
+
+    protected final void SubmitDrawDeregistration() {
+        drawObject.SubmitDrawDeregistration();
+    }
+
+    protected final void SubmitUpdateRegistration() {
+        updateObject.SubmitUpdateRegistration();
+    }
+
+    protected final void SubmitUpdateDeregistration() {
+        updateObject.SubmitUpdateDeregistration();
     }
 
     public void GameDraw(Graphics2D g2) {}
@@ -54,5 +90,6 @@ public abstract class GameObject {
     public void GameAlarm0(){}
     public void GameAlarm1(){}
     public void GameAlarm2(){}
+    public void GameAlarm3(){}
 
 }

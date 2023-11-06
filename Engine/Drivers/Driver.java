@@ -15,16 +15,16 @@ public class Driver {
     private JPanel jPanel;
 
     public static void main(String[] args) {
-        new Driver();
+        Driver driver = new Driver();
     }
 
     private void Initialize() {
-        javax.swing.SwingUtilities.invokeLater (() -> {
+        SwingUtilities.invokeLater(() -> {
             jFrame = new JFrame();
             jPanel = new JPanel();
 
-            jPanel.setPreferredSize(new Dimension(600, 600));
-            jFrame.add(jPanel);
+            jPanel.setPreferredSize(new Dimension(800, 800));
+            jFrame.getContentPane().add(jPanel);
             jFrame.pack();
 
 
@@ -33,7 +33,7 @@ public class Driver {
             jFrame.setResizable(false);
             jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             jFrame.setVisible(true);
-            AntGame antGame = new AntGame();
+            AntGame antGame = new AntGame(jPanel);
             jFrame.add(antGame);
             jFrame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -42,6 +42,5 @@ public class Driver {
                 }
             });
         });
-
     }
 }

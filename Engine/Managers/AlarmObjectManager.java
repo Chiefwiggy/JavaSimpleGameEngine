@@ -2,33 +2,13 @@ package Engine.Managers;
 
 import Engine.GameObjects.AlarmObject;
 import Engine.Helpers.Multimap;
+import Engine.Misc.ALARM_ID;
 
 import java.util.ArrayList;
 
 public class AlarmObjectManager {
 
-    public enum ALARM_ID {
-        ALARM_0(0),
-        ALARM_1(1),
-        ALARM_2(2);
-        public final int al_id;
 
-        private ALARM_ID(int id) {
-            this.al_id = id;
-        }
-
-        public static ALARM_ID toAlarmId(int id) {
-            switch(id) {
-                case 0:
-                    return ALARM_0;
-                case 1:
-                    return ALARM_1;
-                case 2:
-                    return ALARM_2;
-            }
-            return null;
-        }
-    }
 
     public class AlarmPair {
         public AlarmObject aRef;
@@ -45,7 +25,7 @@ public class AlarmObjectManager {
         }
     }
 
-    public final static int ALARM_NUMBER = 3;
+    public final static int ALARM_NUMBER = 4;
 
     public AlarmObjectManager() {
         timeline = new Multimap<>();
@@ -82,7 +62,6 @@ public class AlarmObjectManager {
     }
 
     public void Deregister(Multimap.MultimapIterator iter) {
-        //System.out.println(iter);
         timeline.Remove(iter);
     }
 
