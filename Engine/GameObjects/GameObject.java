@@ -1,5 +1,7 @@
 package Engine.GameObjects;
 
+import Engine.Rendering.DrawSettings;
+
 import java.awt.*;
 
 public abstract class GameObject {

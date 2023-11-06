@@ -4,6 +4,8 @@ import Engine.Commands.DrawDeregistrationCommand;
 import Engine.Commands.DrawRegistrationCommand;
 import Engine.Commands.RegistrationState;
 import Engine.Managers.EngineManager;
+import Engine.Rendering.DrawSettings;
+import Engine.Rendering.GraphicsOptions;
 
 import java.awt.*;
 
@@ -12,6 +14,7 @@ public abstract class DrawObject extends GraphicsObject {
     private RegistrationState registrationState;
     private DrawRegistrationCommand rCmd;
     private DrawDeregistrationCommand drCmd;
+    private String currentRendererKey = null;
 
 
     public DrawObject() {
@@ -22,7 +25,15 @@ public abstract class DrawObject extends GraphicsObject {
     }
 
 
+    public final void Draw(DrawSettings ds) {
+        this.Draw(ds.GetRenderer(currentRendererKey).g2);
+    }
+
     public abstract void Draw(Graphics2D g2);
+
+    public void SetRenderer(String key) {
+        currentRendererKey = key;
+    }
 
     public void SubmitDrawRegistration() {
         assert(registrationState == RegistrationState.CURRENTLY_DEREGISTERED);

@@ -12,7 +12,5 @@ public class Ant extends BoardEntity {
     public void GameDraw(Graphics2D g2) {
         g2.setColor(Color.WHITE);
         g2.fillRect(getWorldX(), getWorldY(), width, height);
-
-
     }
 }

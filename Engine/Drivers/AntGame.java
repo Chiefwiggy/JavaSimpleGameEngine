@@ -1,6 +1,9 @@
 package Engine.Drivers;
 
 import Engine.Managers.EngineManager;
+import Engine.Rendering.BilinearGraphics;
+import Engine.Rendering.DrawSettings;
+import Engine.Rendering.NearestGraphics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +16,8 @@ public class AntGame extends JComponent {
         jPanelRef = panelRef;
     }
     private final JPanel jPanelRef;
-    private Graphics2D g2;
-    private BufferedImage image;
+    public DrawSettings drawSettings;
+    public BufferedImage image;
 
     private final int FPS = 60;
     private final int TARGET_TIME = 1000000000 / FPS;
@@ -33,10 +36,15 @@ public class AntGame extends JComponent {
     public void start() {
         width = getWidth();
         height = getHeight();
+
         image = new BufferedImage(width | 800, height | 800, BufferedImage.TYPE_INT_ARGB);
-        g2 = image.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        drawSettings = new DrawSettings();
+        drawSettings.AddSetting("bilinear", new BilinearGraphics(image));
+        drawSettings.AddSetting("pixel", new NearestGraphics(image));
+        drawSettings.SetDefaultRenderer("bilinear");
+//        g2 = image.createGraphics();
+//        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -61,12 +69,12 @@ public class AntGame extends JComponent {
     }
 
     private void drawBackground() {
-        g2.setColor(new Color(30, 30, 30));
-        g2.fillRect(0,0,width, height);
+        drawSettings.GetDefaultRenderer().g2.setColor(new Color(30, 30, 30));
+        drawSettings.GetDefaultRenderer().g2.fillRect(0,0,width, height);
     }
 
     private void drawGame() {
-        EngineManager.Draw(g2);
+        EngineManager.Draw(drawSettings);
     }
 
     private void render() {

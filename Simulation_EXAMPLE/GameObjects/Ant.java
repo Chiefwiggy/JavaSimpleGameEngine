@@ -38,14 +38,14 @@ public class Ant extends GameObject implements FactoryObject {
     public Ant() {
         super();
         System.out.println("CREATED NEW ANT");
-
+        drawObject.SetRenderer("text");
     }
     @Override
     public void GameDraw(Graphics2D g2) {
         g2.setColor(Color.BLUE);
         g2.fillRect((int)x,(int)y, 50, 50);
 
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        g2.setFont(new Font("Arial", Font.BOLD, 48));
         g2.setColor(Color.RED);
 
         g2.drawString("Hello gamer", 200, 50);
