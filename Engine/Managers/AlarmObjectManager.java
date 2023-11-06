@@ -25,7 +25,7 @@ public class AlarmObjectManager {
         }
     }
 
-    public final static int ALARM_NUMBER = 3;
+    public final static int ALARM_NUMBER = 4;
 
     public AlarmObjectManager() {
         timeline = new Multimap<>();

@@ -80,7 +80,7 @@ public class Ant extends GameObject implements FactoryObject {
         drawObject.SubmitDrawRegistration();
         updateObject.SubmitUpdateRegistration();
         //alarmObject.SubmitAlarmRegistration(12*CONSTANTS.SECOND, ALARM_ID.ALARM_0);
-        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_3);
         lastTime = System.nanoTime();
         sp_idle = SpriteSheetManager.Get("adventurer_idle");
         sp_jump = SpriteSheetManager.Get("adventurer_jump");
@@ -111,7 +111,7 @@ public class Ant extends GameObject implements FactoryObject {
     }
 
     @Override
-    public void GameAlarm1() {
+    public void GameAlarm3() {
         //System.out.println("Time since last trigger: " + ((double)(System.nanoTime() - lastTime)/(double)CONSTANTS.SECOND));
         //lastTime = System.nanoTime();
         currentAnimation++;
@@ -122,7 +122,9 @@ public class Ant extends GameObject implements FactoryObject {
                 currentAnimation = 0;
             }
         }
-        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/15, ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/15, ALARM_ID.ALARM_3);
     }
+
+
 
 }

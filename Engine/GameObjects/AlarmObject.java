@@ -42,6 +42,7 @@ public abstract class AlarmObject {
                 break;
             case ALARM_3:
                 Alarm3();
+                break;
         }
     }
 
