@@ -5,6 +5,7 @@ import Engine.Helpers.CONSTANTS;
 import Engine.Helpers.Keyboard;
 import Engine.Managers.AlarmObjectManager;
 import Engine.Managers.EngineManager;
+import Engine.Misc.ALARM_ID;
 import Simulation_EXAMPLE.GameObjects.Ant;
 import Simulation_EXAMPLE.Factories.AntFactory;
 
@@ -33,7 +34,7 @@ public class SimulationManager extends GameObject {
 
     private void _Initialize() {
         updateObject.SubmitUpdateRegistration();
-        alarmObject.SubmitAlarmRegistration(5 * CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(1 * CONSTANTS.SECOND, ALARM_ID.ALARM_1);
         hasPressed = false;
         ants = new ArrayList<>();
         antFactory = new AntFactory();
@@ -70,9 +71,10 @@ public class SimulationManager extends GameObject {
         if (!hasPressed & Keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
             System.out.println("STEP");
             for (Ant ant : ants) {
-                ant.Move();
+                ant.Jump();
+                ant.JumpingForJoy();
             }
-            alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/2, AlarmObjectManager.ALARM_ID.ALARM_0);
+            alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND, ALARM_ID.ALARM_0);
             hasPressed = true;
         }
     }
@@ -85,6 +87,6 @@ public class SimulationManager extends GameObject {
     @Override
     public void GameAlarm1() {
         _MakeAnt((int)(Math.random() * EngineManager.GetWidth()), (int)(Math.random() * EngineManager.GetHeight()));
-        alarmObject.SubmitAlarmRegistration(5 * CONSTANTS.SECOND, AlarmObjectManager.ALARM_ID.ALARM_1);
+        alarmObject.SubmitAlarmRegistration(5 * CONSTANTS.SECOND, ALARM_ID.ALARM_1);
     }
 }

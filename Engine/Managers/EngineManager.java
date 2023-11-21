@@ -7,8 +7,11 @@ import Engine.GameObjects.DrawObject;
 import Engine.GameObjects.UpdateObject;
 import Engine.Helpers.Multimap;
 import Engine.Helpers.Scene;
+import Engine.Misc.ALARM_ID;
+import Engine.Rendering.DrawSettings;
 import Public_Engine_Files.InitializeScene;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class EngineManager {
@@ -23,7 +26,7 @@ public class EngineManager {
 
     public static void Start(AntGame ref) {getInstance()._Start(ref);}
     public static void Update() { getInstance()._Update();}
-    public static void Draw(Graphics2D g2) { getInstance()._Draw(g2);}
+    public static void Draw(DrawSettings ds) { getInstance()._Draw(ds);}
     public static void Render(Graphics g) { getInstance()._Render(g);}
 
     private DrawObjectManager drawManager;
@@ -52,7 +55,7 @@ public class EngineManager {
         getInstance().updateManager.Deregister(uob);
     }
 
-    public static Multimap.MultimapIterator Register(long t, AlarmObjectManager.ALARM_ID id, AlarmObject aob) { return getInstance().alarmManager.Register(t, id, aob); }
+    public static Multimap.MultimapIterator Register(long t, ALARM_ID id, AlarmObject aob) { return getInstance().alarmManager.Register(t, id, aob); }
 
     public static void Deregister(Multimap.MultimapIterator it) {
         getInstance().alarmManager.Deregister(it);
@@ -65,6 +68,8 @@ public class EngineManager {
     public static int GetHeight() {return getInstance().antGame.getHeight();}
     public static float GetDeltaTime() {return getInstance().antGame.getDeltaTime();}
 
+    public static JPanel GetDrawPanel() {return getInstance().antGame.getJPanelRef();}
+
 
     private void _Start(AntGame ref) {
 
@@ -74,6 +79,8 @@ public class EngineManager {
         alarmManager = new AlarmObjectManager();
         startingObjects = new InitializeScene();
         currentScene = startingObjects.getStartingScene();
+        startingObjects.LoadAssets();
+        startingObjects.AddRenderers(ref.drawSettings, ref.image);
         currentScene.Initialize();
         antGame = ref;
     }
@@ -86,8 +93,8 @@ public class EngineManager {
         updateManager.ProcessElements();
     }
 
-    private void _Draw(Graphics2D g2) {
-        drawManager.ProcessElements(g2);
+    private void _Draw(DrawSettings ds) {
+        drawManager.ProcessElements(ds);
     }
 
     private void _Render(Graphics g) {

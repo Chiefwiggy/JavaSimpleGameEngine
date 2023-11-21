@@ -1,6 +1,7 @@
 package Engine.Managers;
 
 import Engine.GameObjects.DrawObject;
+import Engine.Rendering.DrawSettings;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,9 +23,9 @@ public class DrawObjectManager {
         drawList.remove(dob);
     }
 
-    public void ProcessElements(Graphics2D g2) {
+    public void ProcessElements(DrawSettings ds) {
         for (DrawObject dob : drawList) {
-            dob.Draw(g2);
+            dob.Draw(ds);
         }
     }
 
