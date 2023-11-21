@@ -4,15 +4,14 @@ import Engine.Helpers.Scene;
 import Engine.Rendering.DrawSettings;
 import Engine.ResourceManagement.ImageManager;
 import Engine.ResourceManagement.SpriteSheetManager;
+import Game_Files.GameScene;
 import Simulation_EXAMPLE.CustomRenderer.TextRenderer;
-import Simulation_EXAMPLE.MyFirstScene;
 
 import java.awt.image.BufferedImage;
 
 public class InitializeScene {
     public Scene getStartingScene() {
-        // PUT YOUR SCENE HERE
-        return new MyFirstScene();
+        return new GameScene();
     }
 
     public void LoadAssets() {

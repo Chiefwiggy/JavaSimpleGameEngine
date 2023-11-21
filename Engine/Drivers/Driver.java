@@ -23,7 +23,7 @@ public class Driver {
             jFrame = new JFrame();
             jPanel = new JPanel();
 
-            jPanel.setPreferredSize(new Dimension(800, 800));
+            jPanel.setPreferredSize(new Dimension(600, 600));
             jFrame.getContentPane().add(jPanel);
             jFrame.pack();
 
