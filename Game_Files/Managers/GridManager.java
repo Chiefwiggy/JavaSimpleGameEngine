@@ -6,7 +6,6 @@ import Game_Files.GameObjects.Fish;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.Helpers.AdjacencyMap;
 import Game_Files.Helpers.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,8 +26,8 @@ public class GridManager extends GameObject {
     public static void Initialize() { getInstance()._Initialize(); }
     public static void FillGridSpace(int x, int y, BoardEntities entity) { getInstance()._FillGridSpace(x, y, entity); }
     public static void ClearGridSpace(Pair<Integer> xy) { getInstance()._ClearGridSpace(xy); }
-    public static void Register(@NotNull BoardEntity entity) { getInstance()._Register(entity); }
-    public static void Deregister(@NotNull BoardEntity entity) { getInstance()._Deregister(entity); }
+    public static void Register(BoardEntity entity) { getInstance()._Register(entity); }
+    public static void Deregister(BoardEntity entity) { getInstance()._Deregister(entity); }
     public static ArrayList<Pair<Integer>> GetAvailableAdjacentSpots(Pair<Integer> xy, boolean diagonal, boolean checkFish) {
         return getInstance()._GetAvailableAdjacentSpots(xy, diagonal, checkFish);
     }
@@ -66,11 +65,6 @@ public class GridManager extends GameObject {
     }
 
     private ArrayList<Pair<Integer>> _GetAvailableAdjacentSpots(Pair<Integer> xy, boolean diagonal, boolean checkFish) {
-        // Need to make this so that it can check for fish too.
-        // Another bool param like checkFish
-        // If that's true we need to check to make sure yValues does not contain xy
-            // If that's true, we need to check the actual grid to check if it's a fish
-                // We should already not be checking the spot if it's out of bounds at this point.
         int[] spots = { 0, 1, 0, -1 }; int checks = 4;
         if (diagonal) { spots = new int[]{ 0, 1, -1, 1, 1, -1, -1, 0, -1 }; checks = 9; }
         ArrayList<Pair<Integer>> availableSpots = new ArrayList<>();
@@ -81,7 +75,6 @@ public class GridManager extends GameObject {
             yValues = adjacencyMap.GetList(xNew);
             if ((yValues != null) && (yValues.contains(yNew) != checkFish)) {
                 if ((0 <= xNew && xNew < BOARD_SIZE) && (0 <= yNew && yNew < BOARD_SIZE)) {
-                    // If checkFish == true, check the supposed gridSpace for a fish
                     if (checkFish && !Objects.equals(gridSpaces[xNew][yNew].getClass(), Fish.class)) {
                         continue;
                     }
@@ -102,14 +95,16 @@ public class GridManager extends GameObject {
         EntityManager.Despawn(gridSpaces[xy.get(0)][xy.get(1)]);
     }
 
-    private void _Register(@NotNull BoardEntity entity) {
-        int x = entity.GetCoords().get(0); int y = entity.GetCoords().get(1);
+    private void _Register(BoardEntity entity) {
+        int x = entity.GetCoords().get(0);
+        int y = entity.GetCoords().get(1);
         gridSpaces[x][y] = entity;
         adjacencyMap.Remove(x, y);
     }
 
-    private void _Deregister(@NotNull BoardEntity entity) {
-        int x = entity.GetCoords().get(0); int y = entity.GetCoords().get(1);
+    private void _Deregister(BoardEntity entity) {
+        int x = entity.GetCoords().get(0);
+        int y = entity.GetCoords().get(1);
         gridSpaces[x][y] = null;
         adjacencyMap.Add(x, y);
     }

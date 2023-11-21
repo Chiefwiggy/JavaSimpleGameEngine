@@ -8,9 +8,6 @@ import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
 import Game_Files.Helpers.Pair;
 
-import java.util.Iterator;
-import java.util.PriorityQueue;
-
 // Solely in charge of spawning and despawning entities, as well as any actions
 // done by entities as a whole. Anything related to the grid will be handled by
 // the GridManager class.
@@ -26,6 +23,8 @@ public class EntityManager extends GameObject {
     }
 
     public static void Initialize() { getInstance()._Initialize(); }
+
+    @SuppressWarnings("UnusedReturnValue")
     public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
         return getInstance()._Spawn(xy, species);
     }
@@ -33,46 +32,32 @@ public class EntityManager extends GameObject {
     public static void MoveAll() { getInstance()._MoveAll(); }
 
     public EntityFactory entityFactory;
-    public PriorityQueue<BoardEntity> priorityQueue;
+    private FishManager fishManager;
+    private CrocodileManager crocodileManager;
 
     public EntityManager() {}
 
     private void _Initialize() {
         entityFactory = new EntityFactory();
-        priorityQueue = new PriorityQueue<>(BoardEntity::compareTo);
+        fishManager = new FishManager();
+        crocodileManager =  new CrocodileManager();
     }
 
     private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
+        // This would change so each factory spawns within its respective manager class
         BoardEntity entity = entityFactory.GetEntity(xy, species);
-        if (species != BoardEntities.CORAL) { priorityQueue.add(entity); }
+        if (species == BoardEntities.FISH) { fishManager.Spawn((Fish) entity); }
+        else if (species == BoardEntities.CROCODILE) { crocodileManager.Spawn((Crocodile) entity); }
         return entity;
     }
 
     private void _Despawn(BoardEntity entity) {
         entityFactory.RecycleEntity(entity);
-        priorityQueue.remove(entity);
     }
 
     private void _MoveAll() {
-        // Crocs seem to be replacing fish in the main priorityQueue
-        // Also, step is not activating every [ SPACEBAR ] click. This may just be lag.
-        System.out.println("<Start of moving all entities in queue>");
-        priorityQueue.forEach(System.out::println);
-        PriorityQueue<BoardEntity> tempQueue = new PriorityQueue<>(priorityQueue);
-        Iterator<BoardEntity> iterator = tempQueue.iterator();
-        BoardEntity currentEntity = iterator.next();
-        while(currentEntity.getClass().equals(Fish.class)) {
-            currentEntity.Move();
-            iterator.remove();
-            currentEntity = iterator.next();
-        }
-        iterator = tempQueue.iterator();
-        currentEntity = iterator.next();
-        while(iterator.hasNext()) {
-            currentEntity.Move();
-            currentEntity = iterator.next();
-        }
-        priorityQueue.forEach(System.out::println);
+        fishManager.MoveAllFish();
+        crocodileManager.MoveAllCrocs();
     }
 
 }
