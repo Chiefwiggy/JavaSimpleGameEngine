@@ -5,7 +5,6 @@ import Game_Files.GameObjects.BoardEntity;
 import Game_Files.GameObjects.Fish;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.Helpers.AdjacencyMap;
-import Game_Files.Helpers.Pair;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,11 +24,11 @@ public class GridManager extends GameObject {
 
     public static void Initialize() { getInstance()._Initialize(); }
     public static void FillGridSpace(int x, int y, BoardEntities entity) { getInstance()._FillGridSpace(x, y, entity); }
-    public static void ClearGridSpace(Pair<Integer> xy) { getInstance()._ClearGridSpace(xy); }
+    public static void ClearGridSpace(int x, int y) { getInstance()._ClearGridSpace(x, y); }
     public static void Register(BoardEntity entity) { getInstance()._Register(entity); }
     public static void Deregister(BoardEntity entity) { getInstance()._Deregister(entity); }
-    public static ArrayList<Pair<Integer>> GetAvailableAdjacentSpots(Pair<Integer> xy, boolean diagonal, boolean checkFish) {
-        return getInstance()._GetAvailableAdjacentSpots(xy, diagonal, checkFish);
+    public static ArrayList<int[]> GetAvailableAdjacentSpots(int x, int y, boolean diagonal, boolean checkFish) {
+        return getInstance()._GetAvailableAdjacentSpots(x, y, diagonal, checkFish);
     }
 
     public BoardEntity[][] gridSpaces;
@@ -64,11 +63,11 @@ public class GridManager extends GameObject {
         }
     }
 
-    private ArrayList<Pair<Integer>> _GetAvailableAdjacentSpots(Pair<Integer> xy, boolean diagonal, boolean checkFish) {
+    private ArrayList<int[]> _GetAvailableAdjacentSpots(int x, int y, boolean diagonal, boolean checkFish) {
         int[] spots = { 0, 1, 0, -1 }; int checks = 4;
         if (diagonal) { spots = new int[]{ 0, 1, -1, 1, 1, -1, -1, 0, -1 }; checks = 9; }
-        ArrayList<Pair<Integer>> availableSpots = new ArrayList<>();
-        int x = xy.get(0); int y = xy.get(1); int xNew; int yNew;
+        ArrayList<int[]> availableSpots = new ArrayList<>();
+        int xNew; int yNew;
         ArrayList<Integer> yValues;
         for (int i = 0; i < checks; i++) {
             xNew = x+spots[i]; yNew = y+spots[spots.length-i-1];
@@ -78,7 +77,7 @@ public class GridManager extends GameObject {
                     if (checkFish && !Objects.equals(gridSpaces[xNew][yNew].getClass(), Fish.class)) {
                         continue;
                     }
-                    availableSpots.add(new Pair<>(xNew, yNew));
+                    availableSpots.add(new int[]{xNew, yNew});
                 }
             }
         }
@@ -87,24 +86,23 @@ public class GridManager extends GameObject {
 
     // There's more to this. Will change according to how things play out.
     private void _FillGridSpace(int x, int y, BoardEntities entity) {
-        Pair<Integer> pair = new Pair<>(x, y);
-        EntityManager.Spawn(pair, entity);
+        EntityManager.Spawn(x, y, entity);
     }
 
-    private void _ClearGridSpace(Pair<Integer> xy) {
-        EntityManager.Despawn(gridSpaces[xy.get(0)][xy.get(1)]);
+    private void _ClearGridSpace(int x, int y) {
+        EntityManager.Despawn(gridSpaces[x][y]);
     }
 
     private void _Register(BoardEntity entity) {
-        int x = entity.GetCoords().get(0);
-        int y = entity.GetCoords().get(1);
+        int x = entity.GetCoords()[0];
+        int y = entity.GetCoords()[1];
         gridSpaces[x][y] = entity;
         adjacencyMap.Remove(x, y);
     }
 
     private void _Deregister(BoardEntity entity) {
-        int x = entity.GetCoords().get(0);
-        int y = entity.GetCoords().get(1);
+        int x = entity.GetCoords()[0];
+        int y = entity.GetCoords()[1];
         gridSpaces[x][y] = null;
         adjacencyMap.Add(x, y);
     }

@@ -1,8 +1,10 @@
 package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
-import Game_Files.Helpers.Pair;
-import Game_Files.Interfaces.DrawMethod;
+import Engine.Helpers.CONSTANTS;
+import Engine.Misc.ALARM_ID;
+import Engine.ResourceManagement.SpriteSheet;
+import Game_Files.Helpers.Directions;
 import Game_Files.Managers.GameManager;
 import Game_Files.Managers.GridManager;
 
@@ -10,23 +12,33 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static Game_Files.GameObjects.Background.squareSize;
+import static Game_Files.Helpers.Directions.*;
+import static Game_Files.Helpers.Directions.values;
 
-public abstract class BoardEntity extends GameObject implements Comparable<BoardEntity> {
+@SuppressWarnings("unused")
+public abstract class BoardEntity extends GameObject {
 
-    protected Pair<Integer> xy;
-    protected double entitySizeDivisor;
-    protected int comparisonValue;
+    protected int x; protected int y;
+    protected int goalX; protected int goalY;
     protected boolean canMoveDiagonally;
     protected Color color;
-    protected DrawMethod drawMethod;
 
-    public BoardEntity(Pair<Integer> xy) {
-        this.xy = xy;
+    SpriteSheet current_sp;
+
+    protected int spriteHeight;
+    protected int spriteWidth;
+    int currentAnimation = 0;
+    Directions currentDirection = DOWN;
+
+    public BoardEntity(int x, int y) {
+        this.x = x; this.y = y;
+        SetRenderer("pixel");
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_0);
     }
 
-    public void Initialize(Pair<Integer> xy) {
+    public void Initialize(int x, int y) {
         GridManager.Register(this);
-        this.xy = xy;
+        this.x = x; this.y = y;
         drawObject.SubmitDrawRegistration();
     }
 
@@ -35,35 +47,42 @@ public abstract class BoardEntity extends GameObject implements Comparable<Board
         GridManager.Deregister(this);
     }
 
-    public Pair<Integer> GetCoords() { return this.xy; }
-    public void SetCoords(Pair<Integer> xy) { this.xy = xy; }
+    public int[] GetCoords() { return new int[]{ this.x, this.y }; }
+    public void SetCoords(int x, int y) { this.x = x; this.y = y; }
 
     public void Move() {
-        ArrayList<Pair<Integer>> availableSpots = GridManager.GetAvailableAdjacentSpots(this.xy, this.canMoveDiagonally, false);
+        ArrayList<int[]> availableSpots = GridManager.GetAvailableAdjacentSpots(this.x, this.y, this.canMoveDiagonally, false);
         if (!availableSpots.isEmpty()) {
-            Pair<Integer> spot = availableSpots.get(GameManager.random.nextInt(0, availableSpots.size()));
+            int[] spot = availableSpots.get(GameManager.random.nextInt(0, availableSpots.size()));
             GridManager.Deregister(this);
-            this.SetCoords(spot);
+            this.SetCoords(spot[0], spot[1]);
             GridManager.Register(this);
         }
     }
 
     @Override
     public void GameDraw(Graphics2D g2) {
-        int drawX = convertGridToWorldSpace(xy.get(0)) - (int) (squareSize / this.entitySizeDivisor / 2);
-        int drawY = convertGridToWorldSpace(xy.get(1)) - (int) (squareSize / this.entitySizeDivisor / 2);
-        g2.setColor(this.color);
-        drawMethod.fillShape(drawX, drawY, (int) (squareSize / entitySizeDivisor), (int) (squareSize / entitySizeDivisor));
+        int drawX = convertGridToWorldSpace(this.x) - this.spriteWidth / 2;
+        int drawY = convertGridToWorldSpace(this.y) - this.spriteHeight / 2;
+        g2.drawImage(current_sp.GetSprite(currentAnimation), drawX, drawY, this.spriteWidth, this.spriteHeight, null);
     }
 
     // Returns the center of the gridSpace
-    private int convertGridToWorldSpace(int n) {
+    public int convertGridToWorldSpace(int n) {
         return (int) squareSize * n + ((int) squareSize / 2);
     }
 
     @Override
-    public int compareTo(BoardEntity entity) {
-        return this.comparisonValue - entity.comparisonValue;
+    public void GameAlarm0() {
+        currentAnimation++;
+        int cols = current_sp.GetSpriteSheetCols();
+        int dv = currentDirection.value;
+        if (currentAnimation >= (dv * cols) + cols) { currentAnimation = dv * cols; }
+        // 1/10 chance to change directions randomly
+        if (GameManager.random.nextInt(0, 10) == 5) {
+            this.currentDirection = values()[GameManager.random.nextInt(0, values().length)];
+        }
+        alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_0);
     }
 
 }

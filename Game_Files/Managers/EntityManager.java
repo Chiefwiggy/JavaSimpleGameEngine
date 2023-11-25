@@ -6,7 +6,6 @@ import Game_Files.GameObjects.Crocodile;
 import Game_Files.GameObjects.Fish;
 import Game_Files.Helpers.BoardEntities;
 import Game_Files.GameObjects.BoardEntity;
-import Game_Files.Helpers.Pair;
 
 // Solely in charge of spawning and despawning entities, as well as any actions
 // done by entities as a whole. Anything related to the grid will be handled by
@@ -25,8 +24,8 @@ public class EntityManager extends GameObject {
     public static void Initialize() { getInstance()._Initialize(); }
 
     @SuppressWarnings("UnusedReturnValue")
-    public static BoardEntity Spawn(Pair<Integer> xy, BoardEntities species) {
-        return getInstance()._Spawn(xy, species);
+    public static BoardEntity Spawn(int x, int y, BoardEntities species) {
+        return getInstance()._Spawn(x, y, species);
     }
     public static void Despawn(BoardEntity entity) { getInstance()._Despawn(entity); }
     public static void MoveAll() { getInstance()._MoveAll(); }
@@ -43,9 +42,9 @@ public class EntityManager extends GameObject {
         crocodileManager =  new CrocodileManager();
     }
 
-    private BoardEntity _Spawn(Pair<Integer> xy, BoardEntities species) {
+    private BoardEntity _Spawn(int x, int y, BoardEntities species) {
         // This would change so each factory spawns within its respective manager class
-        BoardEntity entity = entityFactory.GetEntity(xy, species);
+        BoardEntity entity = entityFactory.GetEntity(x, y, species);
         if (species == BoardEntities.FISH) { fishManager.Spawn((Fish) entity); }
         else if (species == BoardEntities.CROCODILE) { crocodileManager.Spawn((Crocodile) entity); }
         return entity;

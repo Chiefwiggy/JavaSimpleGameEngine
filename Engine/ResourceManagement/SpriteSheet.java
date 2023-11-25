@@ -7,10 +7,10 @@ import java.util.stream.IntStream;
 
 public class SpriteSheet {
 
-    private BufferedImage spriteSheet;
-    private int rows, cols;
-    private int spriteHeight, spriteWidth;
-    private int maxElems;
+    private final BufferedImage spriteSheet;
+    private final int rows, cols;
+    private final int spriteHeight, spriteWidth;
+    private final int maxElems;
 
     private ArrayList<BufferedImage> spriteList;
     public SpriteSheet(BufferedImage image, int rows, int columns) {
@@ -60,4 +60,10 @@ public class SpriteSheet {
         }
         return spriteList;
     }
+
+    public int GetSpriteWidth() { return this.spriteWidth; }
+    public int GetSpriteHeight() { return this.spriteHeight; }
+    public int GetSpriteSheetCols() { return this.cols; }
+    public int GetSpriteSheetRows() { return this.rows; }
+
 }

@@ -12,7 +12,7 @@ public class ImageManager {
     private static ImageManager instance;
     private Map<String, BufferedImage> imageMap;
     private BufferedImage nullImage;
-    private String assetFolderPath = "src/Public_Engine_Files/Assets/";
+    private String assetFolderPath = "Public_Engine_Files/Assets/";
     private synchronized static ImageManager getInstance() {
         if (instance == null) {
             instance = new ImageManager();

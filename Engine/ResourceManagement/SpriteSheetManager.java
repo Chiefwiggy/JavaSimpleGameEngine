@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class SpriteSheetManager {
     private static SpriteSheetManager instance;
-    private String assetFolderPath = "src/Public_Engine_Files/Assets/";
+    private String assetFolderPath = "Public_Engine_Files/Assets/";
 
     private synchronized static SpriteSheetManager getInstance() {
         if (instance == null) {

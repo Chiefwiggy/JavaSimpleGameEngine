@@ -15,7 +15,7 @@ public class Driver {
     private JPanel jPanel;
 
     public static void main(String[] args) {
-        Driver driver = new Driver();
+        new Driver();
     }
 
     private void Initialize() {
