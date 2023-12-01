@@ -39,6 +39,8 @@ public class Crocodile extends BoardEntity{
         } else { super.Move(); }
     }
 
+    private void BFS() {}
+
     private void Eat(int x, int y) {
         GridManager.ClearGridSpace(x, y);
         this.fedMeter += 3;
