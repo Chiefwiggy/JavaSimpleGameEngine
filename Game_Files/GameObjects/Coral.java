@@ -13,8 +13,8 @@ public class Coral extends BoardEntity {
     @Override
     public void GameDraw(Graphics2D g2) {
         g2.setColor(this.color);
-        int drawX = convertGridToWorldSpace(this.x) - (int) (squareSize / 2);
-        int drawY = convertGridToWorldSpace(this.y) - (int) (squareSize / 2);
+        int drawX = ConvertGridToWorldSpace(this.gridX) - (int) (squareSize / 2);
+        int drawY = ConvertGridToWorldSpace(this.gridY) - (int) (squareSize / 2);
         g2.fillRect(drawX, drawY, (int) squareSize, (int) squareSize);
     }
 

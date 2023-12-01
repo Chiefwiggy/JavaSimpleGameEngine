@@ -2,6 +2,7 @@ package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
 import Engine.Helpers.CONSTANTS;
+import Engine.Managers.EngineManager;
 import Engine.Misc.ALARM_ID;
 import Engine.ResourceManagement.SpriteSheet;
 import Game_Files.Helpers.Directions;
@@ -15,11 +16,12 @@ import static Game_Files.GameObjects.Background.squareSize;
 import static Game_Files.Helpers.Directions.*;
 import static Game_Files.Helpers.Directions.values;
 
-@SuppressWarnings("unused")
 public abstract class BoardEntity extends GameObject {
 
-    protected int x; protected int y;
-    protected int goalX; protected int goalY;
+    protected int gridX; protected int gridY;
+    protected float worldX; protected float worldY;
+    protected float goalX; protected float goalY;
+    protected final float speed = 90f;
     protected boolean canMoveDiagonally;
     protected Color color;
 
@@ -31,27 +33,35 @@ public abstract class BoardEntity extends GameObject {
     Directions currentDirection = DOWN;
 
     public BoardEntity(int x, int y) {
-        this.x = x; this.y = y;
+        this.gridX = x; this.gridY = y;
+        this.worldX = ConvertGridToWorldSpace(gridX);
+        this.worldY = ConvertGridToWorldSpace(gridY);
         SetRenderer("pixel");
         alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_0);
     }
 
     public void Initialize(int x, int y) {
         GridManager.Register(this);
-        this.x = x; this.y = y;
+        this.gridX = x; this.gridY = y;
         drawObject.SubmitDrawRegistration();
+        //updateObject.SubmitUpdateRegistration();
     }
 
     public void Deinitialize() {
         drawObject.SubmitDrawDeregistration();
+        //updateObject.SubmitUpdateDeregistration();
         GridManager.Deregister(this);
     }
 
-    public int[] GetCoords() { return new int[]{ this.x, this.y }; }
-    public void SetCoords(int x, int y) { this.x = x; this.y = y; }
+    public int[] GetCoords() { return new int[]{ this.gridX, this.gridY }; }
+    public void SetCoords(int x, int y) {
+        this.gridX = x; this.gridY = y;
+        this.worldX = ConvertGridToWorldSpace(x);
+        this.worldY = ConvertGridToWorldSpace(y);
+    }
 
     public void Move() {
-        ArrayList<int[]> availableSpots = GridManager.GetAvailableAdjacentSpots(this.x, this.y, this.canMoveDiagonally, false);
+        ArrayList<int[]> availableSpots = GridManager.GetAvailableAdjacentSpots(this.gridX, this.gridY, this.canMoveDiagonally, false);
         if (!availableSpots.isEmpty()) {
             int[] spot = availableSpots.get(GameManager.random.nextInt(0, availableSpots.size()));
             GridManager.Deregister(this);
@@ -62,13 +72,13 @@ public abstract class BoardEntity extends GameObject {
 
     @Override
     public void GameDraw(Graphics2D g2) {
-        int drawX = convertGridToWorldSpace(this.x) - this.spriteWidth / 2;
-        int drawY = convertGridToWorldSpace(this.y) - this.spriteHeight / 2;
+        int drawX = ConvertGridToWorldSpace(this.gridX) - this.spriteWidth / 2;
+        int drawY = ConvertGridToWorldSpace(this.gridY) - this.spriteHeight / 2;
         g2.drawImage(current_sp.GetSprite(currentAnimation), drawX, drawY, this.spriteWidth, this.spriteHeight, null);
     }
 
     // Returns the center of the gridSpace
-    public int convertGridToWorldSpace(int n) {
+    public int ConvertGridToWorldSpace(int n) {
         return (int) squareSize * n + ((int) squareSize / 2);
     }
 
@@ -84,5 +94,15 @@ public abstract class BoardEntity extends GameObject {
         }
         alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_0);
     }
+
+    /*@Override
+    public void GameUpdate() {
+        if ((int) goalX != (int) worldX) {
+            worldX += (int) (Math.signum(goalX - worldX)*Math.min(speed * EngineManager.GetDeltaTime(), Math.abs(goalX - worldX)));
+        }
+        if ((int) goalY != (int) worldY) {
+            worldY += (int) (Math.signum(goalY - worldY)*Math.min(speed * EngineManager.GetDeltaTime(), Math.abs(goalY - worldY)));
+        }
+    }*/
 
 }

@@ -29,7 +29,7 @@ public class Crocodile extends BoardEntity{
 
     @Override
     public void Move() {
-        ArrayList<int[]> availableSpots = GridManager.GetAvailableAdjacentSpots(this.x, this.y, false, true);
+        ArrayList<int[]> availableSpots = GridManager.GetAvailableAdjacentSpots(this.gridX, this.gridY, false, true);
         if (!availableSpots.isEmpty()) {
             int[] spot = availableSpots.get(GameManager.random.nextInt(0, availableSpots.size()));
             GridManager.Deregister(this);
