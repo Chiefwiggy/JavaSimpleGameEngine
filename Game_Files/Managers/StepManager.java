@@ -5,21 +5,25 @@ import Engine.Helpers.Keyboard;
 
 import java.awt.event.KeyEvent;
 
-public class StepManager extends GameObject {
-    private boolean hasPressed = false;
-    private int stepCounter;
+public class StepManager extends GameObject
+{
 
-    public StepManager() {
-        updateObject.SubmitUpdateRegistration();
-    }
+    private boolean hasPressed = false;
+
+    public StepManager() { updateObject.SubmitUpdateRegistration(); }
 
     @Override
-    public void GameUpdate() {
-        if (!hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE)) {
+    public void GameUpdate()
+    {
+        if (!hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE))
+        {
             hasPressed = true;
             GameManager.Step();
-        }else if (hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE))) {
+        }
+        else if (hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE)))
+        {
             hasPressed = false;
         }
     }
+
 }

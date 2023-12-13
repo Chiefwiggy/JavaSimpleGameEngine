@@ -1,11 +1,7 @@
 package Game_Files.Managers;
 
-import Engine.GameObjects.GameObject;
-import Game_Files.GameObjects.Background;
-
-import java.util.Random;
-
-public class GameManager extends GameObject {
+public class GameManager
+{
 
     private static GameManager instance;
 
@@ -16,34 +12,29 @@ public class GameManager extends GameObject {
         return instance;
     }
 
+    public static void Initialize() { getInstance()._Initialize(); }
+
+    public static void Step() { getInstance()._Step(); }
+
     public StepManager stepManager;
-    public Background background;
-    public static final Random random = new Random();
 
-    public static void Initialize() {
-        getInstance()._Initialize();
-    }
-
-    private void _Initialize() {
-        background = new Background();
+    private void _Initialize()
+    {
         stepManager = new StepManager();
-        EntityManager.Initialize();
         GridManager.Initialize();
+        GameEntityManager.Initialize();
     }
 
-    public static void Step() {
-        getInstance()._Step();
-    }
-
-    private void _Step() {
-        System.out.println("HERE");
+    private void _Step()
+    {
+        GameEntityManager.SpawnEntities();
         // Firstly, EntityManager should spawn fish if fish count meets requirements
 
 
         //EntityManager.GetQueue().forEach(entity -> System.out.println(entity.species));
         //EntityManager.GetQueue().forEach(entity -> entity.Move());
         // Instead we do
-        EntityManager.MoveAll();
+        GameEntityManager.MoveAll();
         // This should just call move for every object in the queue
 
 

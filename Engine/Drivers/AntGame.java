@@ -69,7 +69,7 @@ public class AntGame extends JComponent {
     }
 
     private void drawBackground() {
-        drawSettings.GetDefaultRenderer().g2.setColor(new Color(30, 30, 30));
+        drawSettings.GetDefaultRenderer().g2.setColor(Color.WHITE);
         drawSettings.GetDefaultRenderer().g2.fillRect(0,0,width, height);
     }
 

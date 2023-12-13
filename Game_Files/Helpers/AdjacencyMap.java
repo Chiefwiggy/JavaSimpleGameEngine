@@ -2,41 +2,52 @@ package Game_Files.Helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
-public class AdjacencyMap<K, T> {
+public class AdjacencyMap<K, V>
+{
 
-    public AdjacencyMap() {
+    private final HashMap<K, ArrayList<V>> adjacencyMap;
+
+    private final ArrayList<K> keyList;
+
+    private final Random random = new Random();
+
+    public AdjacencyMap()
+    {
         adjacencyMap = new HashMap<>();
         keyList = new ArrayList<>();
     }
 
-    private final HashMap<K, ArrayList<T>> adjacencyMap;
-    private final ArrayList<K> keyList;
-
-    public void Add(K key, T obj) {
-        ArrayList<T> currentList = adjacencyMap.get(key);
-        if (currentList == null) {
+    public void Add(K key, V value)
+    {
+        ArrayList<V> currentList = adjacencyMap.get(key);
+        if (currentList == null)
+        {
             currentList = new ArrayList<>();
             adjacencyMap.put(key, currentList);
             keyList.add(key);
         }
-        currentList.add(obj);
+        currentList.add(value);
     }
 
-    public void Remove(K key, T obj) {
-        ArrayList<T> currentList = adjacencyMap.get(key);
-        currentList.remove(obj);
-        if (currentList.isEmpty()) {
+    public void Remove(K key, V value)
+    {
+        ArrayList<V> currentList = adjacencyMap.get(key);
+        currentList.remove(value);
+        if (currentList.isEmpty())
+        {
             adjacencyMap.remove(key);
             keyList.remove(key);
         }
     }
 
-    public ArrayList<T> GetList(K key) {
-        return adjacencyMap.get(key);
+    public Object[] GetRandom()
+    {
+        K key = keyList.get(random.nextInt(keyList.size()));
+        ArrayList<V> list = adjacencyMap.get(key);
+        V value = list.get(random.nextInt(list.size()));
+        return new Object[] { key, value };
     }
 
-    public ArrayList<K> GetKeys() {
-        return keyList;
-    }
 }
