@@ -9,11 +9,12 @@ import Game_Files.Enums.BoardEntities;
 import Game_Files.Interfaces.FactoryObject;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class EntityObject extends GameObject implements FactoryObject
 {
 
-    protected GridSpace<? extends EntityObject> currentGridSpace;
+    protected GridSpace<EntityObject> currentGridSpace;
 
     public BoardEntities species;
 
@@ -37,9 +38,14 @@ public abstract class EntityObject extends GameObject implements FactoryObject
 
     public GridSpace<? extends EntityObject> GetCurrentGridSpace() { return currentGridSpace; }
 
-    public void SetCurrentGridSpace(GridSpace<? extends EntityObject> gridSpace)
+    public void SetCurrentGridSpace(GridSpace<EntityObject> gridSpace)
     {
         currentGridSpace = gridSpace;
+    }
+
+    public ArrayList<GridSpace<EntityObject>> GetAdjacentSpaces()
+    {
+        return currentGridSpace.GetAdjacentSpaces();
     }
 
     public void Move()

@@ -8,21 +8,41 @@ import java.awt.event.KeyEvent;
 public class StepManager extends GameObject
 {
 
+    private static StepManager instance;
+
+    private synchronized static StepManager getInstance() {
+        if (instance == null) {
+            instance = new StepManager();
+        }
+        return instance;
+    }
+
+    public static void Initialize() { getInstance()._Initialize(); }
+
+    public static int GetStepCount() { return getInstance()._GetStepCount(); }
+
     private boolean hasPressed = false;
 
-    public StepManager() { updateObject.SubmitUpdateRegistration(); }
+    private int stepCount = 0;
+
+    public StepManager() {}
+
+    private void _Initialize() { updateObject.SubmitUpdateRegistration(); }
+
+    private int _GetStepCount() { return stepCount; }
 
     @Override
     public void GameUpdate()
     {
-        if (!hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE))
+        if (!instance.hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE))
         {
-            hasPressed = true;
+            instance.hasPressed = true;
             GameManager.Step();
+            instance.stepCount += 1;
         }
-        else if (hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE)))
+        else if (instance.hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE)))
         {
-            hasPressed = false;
+            instance.hasPressed = false;
         }
     }
 

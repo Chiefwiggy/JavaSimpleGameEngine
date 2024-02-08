@@ -1,13 +1,10 @@
 package Game_Files.GameObjects.EntityObjects;
 
-import Engine.ResourceManagement.SpriteSheet;
 import Game_Files.Enums.BoardEntities;
 import Game_Files.Helpers.Coordinate;
-import Game_Files.Helpers.Sprite;
+import Game_Files.Managers.GridManager;
 
 import java.awt.*;
-
-import static Game_Files.Managers.GameManager.*;
 
 public class Coral extends EntityObject {
 
@@ -24,8 +21,9 @@ public class Coral extends EntityObject {
     @Override
     public void GameDraw(Graphics2D g2) {
         g2.setColor(this.color);
-        Coordinate<Integer> coords = currentGridSpace.GetGridCoords();
-        g2.fillRect(coords.GetX(), coords.GetY(), (int) SQUARE_SIZE, (int) SQUARE_SIZE);
+        Coordinate<Float> coords = currentGridSpace.GetWorldCoords();
+        int squareSize = (int) GridManager.GetGridSpaceSize();
+        g2.fillRect(coords.GetX().intValue(), coords.GetY().intValue(), squareSize, squareSize);
     }
 
     @Override

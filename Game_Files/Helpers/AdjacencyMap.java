@@ -44,10 +44,26 @@ public class AdjacencyMap<K, V>
 
     public Object[] GetRandom()
     {
+        if (keyList.isEmpty()) { return new Object[] { null, null }; }
         K key = keyList.get(random.nextInt(keyList.size()));
         ArrayList<V> list = adjacencyMap.get(key);
         V value = list.get(random.nextInt(list.size()));
         return new Object[] { key, value };
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (K key : keyList)
+        {
+            sb.append("\n").append(key).append(": ");
+            for (V value : adjacencyMap.get(key))
+            {
+                sb.append(value).append(", ");
+            }
+        }
+        return sb.toString();
     }
 
 }

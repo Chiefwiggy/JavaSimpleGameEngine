@@ -32,21 +32,22 @@ public class Sprite {
         this.cols = spriteSheet.GetSpriteSheetCols();
     }
 
-    public void DrawSprite(Graphics2D g2, Coordinate gridCoords)
+    public void DrawSprite(Graphics2D g2, Coordinate<Integer> gridCoords)
     {
-        Coordinate worldCoords = ConvertGridToWorldSpace(gridCoords);
+        Coordinate<Float> worldCoords = ConvertGridToWorldSpace(gridCoords);
         BufferedImage img = spriteSheet.GetSprite(currentAnimation);
-        g2.drawImage(img, worldCoords.GetX().intValue(), worldCoords.GetY().intValue(), width, height, null);
+        g2.drawImage(img, worldCoords.GetX().intValue(), worldCoords.GetY().intValue(),
+            width, height, null);
     }
 
-    private Coordinate ConvertGridToWorldSpace(Coordinate gridCoords)
+    private Coordinate<Float> ConvertGridToWorldSpace(Coordinate<Integer> gridCoords)
     {
         float squareSize = GridManager.GetGridSpaceSize();
         BiFunction<Integer, Integer, Integer> func = (n, spriteDimension) ->
-                (int) ((squareSize * n + (squareSize / 2)) - spriteDimension / 2);
-        int worldX = func.apply(gridCoords.GetX().intValue(), width);
-        int worldY = func.apply(gridCoords.GetY().intValue(), height);
-        return new Coordinate(worldX, worldY);
+            (int) ((squareSize * n + (squareSize / 2)) - spriteDimension / 2);
+        float worldX = func.apply(gridCoords.GetX(), width);
+        float worldY = func.apply(gridCoords.GetY(), height);
+        return new Coordinate<>(worldY, worldX);
     }
 
     public void UpdateSprite()

@@ -1,9 +1,13 @@
 package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Enums.BoardEntities;
+import Game_Files.GameObjects.EntityObjects.EntityObject;
+import Game_Files.GameObjects.GridSpace;
+import Game_Files.Helpers.GridSpaceSelector;
 import Game_Files.Managers.EntityManagers.*;
 
-// Handles logic dealing with EntityManagers and getting things put on the grid
+// Handles logic dealing with EntityObject managers and getting things put on the grid
 public class GameEntityManager extends GameObject {
 
     private static GameEntityManager instance;
@@ -19,9 +23,16 @@ public class GameEntityManager extends GameObject {
 
     public static void SpawnEntities() { getInstance()._SpawnEntities(); }
 
+    public static AbstractEntityManager GetManager(BoardEntities entityType)
+    {
+        return getInstance()._GetManager(entityType);
+    }
+
     public static void MoveAll() { getInstance()._MoveAll(); }
 
     private AbstractEntityManager[] entityManagers;
+
+    private GridSpaceSelector gridSpaceSelector;
 
     public GameEntityManager() {}
 
@@ -29,21 +40,30 @@ public class GameEntityManager extends GameObject {
     {
         entityManagers = new AbstractEntityManager[]
         {
-            new FishManager(), new CrocodileManager(), new CoralManager()
+            new CoralManager(), new FishManager(), new CrocodileManager()
         };
-        // This is the initialize step (12 fish, 4 crocs, 4 coral)
-        for (int i = 0; i < 12; i++) { _SpawnEntities(); }
+        gridSpaceSelector = new GridSpaceSelector();
+        // This is the initialize step (4 coral, 12 fish, 4 crocs)
+        SpawnEntities();
     }
 
     private void _SpawnEntities()
     {
-        for (AbstractEntityManager entityManager : entityManagers)
-        {
-            if (entityManager.ShouldSpawn())
-            {
-                GridManager.FillGridSpace(entityManager.Spawn());
+        for (AbstractEntityManager entityManager : entityManagers) {
+            while (entityManager.ShouldSpawn()) {
+                GridSpace<EntityObject> gridSpace = gridSpaceSelector.Select(entityManager.SpawnHow());
+                if (gridSpace != null)
+                {
+                    GridManager.FillGridSpace(gridSpace, entityManager.Spawn());
+                }
             }
+            entityManager.ResetHasSpawned();
         }
+    }
+
+    private AbstractEntityManager _GetManager(BoardEntities entityType)
+    {
+        return entityManagers[entityType.ordinal()];
     }
 
     private void _MoveAll()

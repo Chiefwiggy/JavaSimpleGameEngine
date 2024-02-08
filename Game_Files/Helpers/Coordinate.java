@@ -1,18 +1,17 @@
 package Game_Files.Helpers;
 
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import Game_Files.Interfaces.BehaviorParameter;
 
-public class Coordinate
+public class Coordinate<T> implements BehaviorParameter
 {
 
-    private final Number x, y;
+    private final T x, y;
 
-    public Coordinate(Number x, Number y) { this.x = x; this.y = y; }
+    public Coordinate(T y, T x) { this.x = x; this.y = y; }
 
-    public Number GetX() { return x; }
+    public T GetX() { return x; }
 
-    public Number GetY() { return y; }
+    public T GetY() { return y; }
 
     @Override
     public String toString() { return "Coordinate (" + x + ", " + y + ')'; }
