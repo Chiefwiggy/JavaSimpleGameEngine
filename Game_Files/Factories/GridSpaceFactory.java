@@ -7,6 +7,6 @@ public class GridSpaceFactory extends AbstractFactory {
 
     public GridSpaceFactory() {}
 
-    protected GridSpace<EntityObject> build() { return new GridSpace<>(); }
+    protected GridSpace<EntityObject> CreateNew() { return new GridSpace<>(); }
 
 }

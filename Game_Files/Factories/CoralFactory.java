@@ -6,7 +6,7 @@ public class CoralFactory extends AbstractFactory {
 
     public CoralFactory() {}
 
-    protected Coral build() {
+    protected Coral CreateNew() {
         return new Coral();
     }
 

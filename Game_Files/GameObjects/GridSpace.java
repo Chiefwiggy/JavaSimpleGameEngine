@@ -1,6 +1,7 @@
 package Game_Files.GameObjects;
 
 import Engine.GameObjects.GameObject;
+import Game_Files.Enums.EntityObjects;
 import Game_Files.Enums.GridSpaceDirections;
 import Game_Files.GameObjects.EntityObjects.EntityObject;
 import Game_Files.Helpers.Coordinate;
@@ -9,6 +10,9 @@ import Game_Files.Managers.GridManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.function.Predicate;
+
+import static Game_Files.Enums.GridSpaceDirections.*;
 
 public class GridSpace<T> extends GameObject implements FactoryObject
 {
@@ -21,7 +25,7 @@ public class GridSpace<T> extends GameObject implements FactoryObject
 
     private Color color;
 
-    private T data;
+    private T data = null;
 
     public GridSpace() {}
 
@@ -53,13 +57,36 @@ public class GridSpace<T> extends GameObject implements FactoryObject
 
     public boolean IsEmpty() { return data == null; }
 
-    public ArrayList<GridSpace<EntityObject>> GetAdjacentSpaces() {
+    public boolean Contains(EntityObjects entityType)
+    {
+        System.out.println("HERE");
+        if (data != null) { System.out.println(((EntityObject) data).species.toString()); }
+        return data != null && ((EntityObject) data).species == entityType;
+    }
+
+    public ArrayList<GridSpace<EntityObject>> GetAdjacentSpaces()
+    {
+        Predicate<GridSpace<EntityObject>> condition = GridSpace::IsEmpty;
+        return GetAdjacentSpaces(condition, false);
+    }
+    public ArrayList<GridSpace<EntityObject>> GetAdjacentSpaces(Predicate<GridSpace<EntityObject>> condition, boolean diagonal)
+    {
         ArrayList<GridSpace<EntityObject>> availableSpaces = new ArrayList<>();
-        for (GridSpaceDirections direction : GridSpaceDirections.values()) {
-            int xCheck = this.gridCoords.GetX() + direction.xInc;
-            int yCheck = this.gridCoords.GetY() + direction.yInc;
-            GridSpace<EntityObject> check = GridManager.GetGridSpace(new Coordinate<>(yCheck, xCheck));
-            if (check.IsEmpty()) { availableSpaces.add(check); }
+        GridSpaceDirections[] directions = new GridSpaceDirections[] { UP, RIGHT, DOWN, LEFT };
+        if (diagonal) { directions = GridSpaceDirections.values(); }
+        for (GridSpaceDirections direction : directions)
+        {
+            int rowCheck = gridCoords.GetRow() + direction.yInc;
+            int colCheck = gridCoords.GetCol() + direction.xInc;
+            Coordinate<Integer> coord = new Coordinate<>(rowCheck, colCheck);
+            System.out.println("Checking coord: ( Row: " + rowCheck + ", Col: " + colCheck + " )");
+            GridSpace<EntityObject> check = GridManager.GetGridSpace(coord);
+            if (check != null && condition.test(check))
+            {
+                //System.out.println(check.data);
+                availableSpaces.add(check);
+                //System.out.println("Added " + check.GetGridCoords().toString() + " to available spaces");
+            }
         }
         return availableSpaces;
     }
@@ -68,28 +95,31 @@ public class GridSpace<T> extends GameObject implements FactoryObject
     // GridSpace uses top left corner
     private Coordinate<Float> ConvertGridToWorldSpace(Coordinate<Integer> coords)
     {
-        return new Coordinate<>(size * coords.GetY(), size * coords.GetX());
+        return new Coordinate<>(size * coords.GetRow(), size * coords.GetCol());
     }
 
     private Color SetColor()
     {
-        if (gridCoords.GetY() % 2 == 0)
-            return (gridCoords.GetX() % 2 == 0) ? Color.GRAY : Color.WHITE;
+        if (gridCoords.GetRow() % 2 == 0)
+            return (gridCoords.GetCol() % 2 == 0) ? Color.GRAY : Color.WHITE;
         else
-            return (gridCoords.GetX() % 2 != 0) ? Color.GRAY : Color.WHITE;
+            return (gridCoords.GetCol() % 2 != 0) ? Color.GRAY : Color.WHITE;
     }
 
     @Override
     public void GameDraw(Graphics2D g2)
     {
         g2.setColor(color);
-        g2.fillRect(worldCoords.GetX().intValue(), worldCoords.GetY().intValue(), (int) size, (int) size);
+        int x = worldCoords.GetCol().intValue(), y = worldCoords.GetRow().intValue();
+        g2.fillRect(x, y, (int) size, (int) size);
     }
 
     @Override
     public String toString()
     {
-        return "GridSpace with " + gridCoords.toString() + " contains " + data;
+        EntityObjects containedData = null;
+        if (data != null) { containedData = ((EntityObject) (data)).species; }
+        return "GridSpace with " + gridCoords.toString() + " contains " + containedData;
     }
 
 }

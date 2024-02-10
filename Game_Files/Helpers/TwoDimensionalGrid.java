@@ -32,41 +32,47 @@ public class TwoDimensionalGrid<T> {
             for (int col = 0; col < gridSize; col++)
             {
                 gridSpaces[row][col] = (GridSpace<T>) gridSpaceFactory.GetEntity();
-                gridSpaces[row][col].SetCoordinates(new Coordinate<>(col, row));
-                availableSpaces.Add(col, row);
+                gridSpaces[row][col].SetCoordinates(new Coordinate<>(row, col));
+                availableSpaces.Add(row, col);
             }
         }
     }
 
     public GridSpace<T> GetSpace(Coordinate<Integer> coord)
     {
-        return gridSpaces[coord.GetY()][coord.GetX()];
+        return gridSpaces[coord.GetRow()][coord.GetCol()];
     }
 
     public void SetData(GridSpace<T> gridSpace, T data)
     {
         gridSpace.SetData(data);
-        availableSpaces.Remove(gridSpace.GetGridCoords().GetY(), gridSpace.GetGridCoords().GetX());
+        availableSpaces.Remove(gridSpace.GetGridCoords().GetRow(), gridSpace.GetGridCoords().GetCol());
     }
 
-    public T GetData(Coordinate<Integer> coord) { return GetSpace(coord).GetData(); }
+    //public T GetData(Coordinate<Integer> coord) { return GetSpace(coord).GetData(); }
+
+    public void ClearData(GridSpace<T> gridSpace)
+    {
+        gridSpace.SetData(null);
+        availableSpaces.Add(gridSpace.GetGridCoords().GetRow(), gridSpace.GetGridCoords().GetCol());
+    }
 
     public GridSpace<T> GetRandomSpace()
     {
         System.out.println(availableSpaces.toString());
         Object[] randomValues = availableSpaces.GetRandom();
-        return GetSpace(new Coordinate<>((int) randomValues[1], (int) randomValues[0]));
+        return GetSpace(new Coordinate<>((int) randomValues[0], (int) randomValues[1]));
     }
 
-    public int Size() { return size; }
+    //public int Size() { return size; }
 
     public void PrintGrid()
     {
-        for (GridSpace<T>[] row : gridSpaces)
+        for (int row = 0; row < size; row++)
         {
-            for (GridSpace<T> space : row)
+            for (int col = 0; col < size; col++)
             {
-                System.out.println(space.toString());
+                System.out.println(gridSpaces[row][col].toString());
             }
         }
     }

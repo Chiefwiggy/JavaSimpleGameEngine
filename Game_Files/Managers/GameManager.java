@@ -21,19 +21,14 @@ public class GameManager
         StepManager.Initialize();
         GridManager.Initialize();
         GameEntityManager.Initialize();
+        GridManager.PrintGrid();
     }
 
     private void _Step()
     {
-        System.out.println("HERE");
+        System.out.println("Step: " + StepManager.GetStepCount());
         GameEntityManager.SpawnEntities();
         GameEntityManager.MoveAll();
-        // Fish move
-        // Crocs check adjacent cells for fish
-            // If yes, consume and move into spot
-            // Else, move to non-occupied space
-                // Note: can be any adjacent space (including diagonal)
-        // Query fish count
     }
 
 }

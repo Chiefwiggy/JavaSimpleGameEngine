@@ -34,15 +34,15 @@ public class StepManager extends GameObject
     @Override
     public void GameUpdate()
     {
-        if (!instance.hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE))
+        if (!getInstance().hasPressed && Keyboard.isKeyPressed(KeyEvent.VK_SPACE))
         {
-            instance.hasPressed = true;
+            getInstance().hasPressed = true;
+            getInstance().stepCount += 1;
             GameManager.Step();
-            instance.stepCount += 1;
         }
-        else if (instance.hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE)))
+        else if (getInstance().hasPressed && !(Keyboard.isKeyPressed(KeyEvent.VK_SPACE)))
         {
-            instance.hasPressed = false;
+            getInstance().hasPressed = false;
         }
     }
 

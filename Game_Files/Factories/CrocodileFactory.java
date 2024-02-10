@@ -6,7 +6,7 @@ public class CrocodileFactory extends AbstractFactory {
 
     public CrocodileFactory() {}
 
-    protected Crocodile build() {
+    protected Crocodile CreateNew() {
         return new Crocodile();
     }
 

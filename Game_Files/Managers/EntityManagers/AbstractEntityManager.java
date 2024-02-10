@@ -4,15 +4,13 @@ import Engine.GameObjects.GameObject;
 import Game_Files.Factories.AbstractFactory;
 import Game_Files.GameObjects.EntityObjects.EntityObject;
 import Game_Files.Helpers.SpawnBehavior;
-import Game_Files.Interfaces.BehaviorParameter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static Game_Files.Enums.SpawnBehaviors.*;
 
-public abstract class AbstractEntityManager extends GameObject implements BehaviorParameter
-{
+public abstract class AbstractEntityManager extends GameObject {
 
     protected AbstractFactory factory;
 
@@ -38,7 +36,7 @@ public abstract class AbstractEntityManager extends GameObject implements Behavi
     // This is our default, otherwise we override
     public boolean ShouldSpawn() { return liveEntities.size() < 4; }
 
-    public SpawnBehavior SpawnHow() { return new SpawnBehavior(RANDOM, null); }
+    public SpawnBehavior<?> SpawnHow() { return new SpawnBehavior<>(RANDOM, 0); }
 
     public void ResetHasSpawned() { hasSpawned = false; }
 

@@ -22,13 +22,20 @@ public class GridManager
 
     public static void Initialize() { getInstance()._Initialize(); }
 
-    public static float GetGridSize() { return getInstance()._GetGridSize(); }
+    public static void PrintGrid() { getInstance()._PrintGrid(); }
+
+    //public static float GetGridSize() { return getInstance()._GetGridSize(); }
 
     public static float GetGridSpaceSize() { return getInstance()._GetGridSpaceSize(); }
 
     public static void FillGridSpace(GridSpace<EntityObject> gridSpace, EntityObject entity)
     {
         getInstance()._FillGridSpace(gridSpace, entity);
+    }
+
+    public static void ClearGridSpace(GridSpace<EntityObject> gridSpace)
+    {
+        getInstance()._ClearGridSpace(gridSpace);
     }
 
     public static GridSpace<EntityObject> GetGridSpace(Coordinate<Integer> coord)
@@ -49,7 +56,9 @@ public class GridManager
         grid = new TwoDimensionalGrid<>(gridSize);
     }
 
-    public int _GetGridSize() { return grid.Size(); }
+    public void _PrintGrid() { grid.PrintGrid(); }
+
+    //public int _GetGridSize() { return grid.Size(); }
 
     public float _GetGridSpaceSize() { return (float) worldSize / gridSize; }
 
@@ -59,14 +68,21 @@ public class GridManager
         entity.SetCurrentGridSpace(gridSpace);
     }
 
+    private void _ClearGridSpace(GridSpace<EntityObject> gridSpace)
+    {
+        grid.ClearData(gridSpace);
+    }
+
     private GridSpace<EntityObject> _GetGridSpace() {
         return grid.GetRandomSpace();
     }
     private GridSpace<EntityObject> _GetGridSpace(Coordinate<Integer> coord)
     {
-        int x = coord.GetX(), y = coord.GetY();
-        if ((x < 0 || x >= gridSize) || (y < 0 || y >= gridSize)) { return null; }
-        else return grid.GetSpace(coord);
+        int row = coord.GetRow(), col = coord.GetCol();
+        if ((row < 0 || row >= gridSize) || (col < 0 || col >= gridSize)) { return null; }
+        GridSpace<EntityObject> gridSpace = grid.GetSpace(coord);
+        if (!gridSpace.IsEmpty()) { return null; }
+        else return gridSpace;
     }
 
 }

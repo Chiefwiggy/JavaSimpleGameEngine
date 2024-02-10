@@ -1,6 +1,7 @@
 package Game_Files.Enums;
 
 public enum SpriteDirections {
+
     UP(0),
     RIGHT(1),
     DOWN(2),

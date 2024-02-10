@@ -1,19 +1,16 @@
 package Game_Files.Helpers;
 
-import Game_Files.Interfaces.BehaviorParameter;
+public class Coordinate<T> {
 
-public class Coordinate<T> implements BehaviorParameter
-{
+    private final T row, col;
 
-    private final T x, y;
+    public Coordinate(T row, T col) { this.row = row; this.col = col; }
 
-    public Coordinate(T y, T x) { this.x = x; this.y = y; }
+    public T GetRow() { return row; }
 
-    public T GetX() { return x; }
-
-    public T GetY() { return y; }
+    public T GetCol() { return col; }
 
     @Override
-    public String toString() { return "Coordinate (" + x + ", " + y + ')'; }
+    public String toString() { return "Coordinate ( Row: " + row + ", Col: " + col + " )"; }
 
 }

@@ -6,7 +6,7 @@ public class FishFactory extends AbstractFactory {
 
     public FishFactory() {}
 
-    protected Fish build() {
+    protected Fish CreateNew() {
         return new Fish();
     }
 

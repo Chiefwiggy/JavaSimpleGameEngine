@@ -1,6 +1,7 @@
 package Game_Files.Enums;
 
-public enum BoardEntities {
+public enum EntityObjects {
+
     CORAL(),
     FISH(),
     CROCODILE()

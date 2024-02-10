@@ -1,7 +1,7 @@
 package Game_Files.Managers;
 
 import Engine.GameObjects.GameObject;
-import Game_Files.Enums.BoardEntities;
+import Game_Files.Enums.EntityObjects;
 import Game_Files.GameObjects.EntityObjects.EntityObject;
 import Game_Files.GameObjects.GridSpace;
 import Game_Files.Helpers.GridSpaceSelector;
@@ -23,7 +23,7 @@ public class GameEntityManager extends GameObject {
 
     public static void SpawnEntities() { getInstance()._SpawnEntities(); }
 
-    public static AbstractEntityManager GetManager(BoardEntities entityType)
+    public static AbstractEntityManager GetManager(EntityObjects entityType)
     {
         return getInstance()._GetManager(entityType);
     }
@@ -54,14 +54,16 @@ public class GameEntityManager extends GameObject {
                 GridSpace<EntityObject> gridSpace = gridSpaceSelector.Select(entityManager.SpawnHow());
                 if (gridSpace != null)
                 {
-                    GridManager.FillGridSpace(gridSpace, entityManager.Spawn());
+                    EntityObject entity = entityManager.Spawn();
+                    GridManager.FillGridSpace(gridSpace, entity);
+                    System.out.println(entity.species + " Spawned at: " + entity.GetCurrentGridSpace().GetGridCoords().toString());
                 }
             }
             entityManager.ResetHasSpawned();
         }
     }
 
-    private AbstractEntityManager _GetManager(BoardEntities entityType)
+    private AbstractEntityManager _GetManager(EntityObjects entityType)
     {
         return entityManagers[entityType.ordinal()];
     }

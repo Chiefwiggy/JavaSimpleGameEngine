@@ -1,8 +1,14 @@
 package Game_Files.GameObjects.EntityObjects;
 
+import Game_Files.Enums.EntityObjects;
+import Game_Files.GameObjects.GridSpace;
 import Game_Files.Helpers.Sprite;
+import Game_Files.Managers.GameEntityManager;
+import Game_Files.Managers.GridManager;
 
-import static Game_Files.Enums.BoardEntities.*;
+import java.util.List;
+
+import static Game_Files.Enums.EntityObjects.*;
 
 public class Crocodile extends EntityObject
 {
@@ -17,9 +23,34 @@ public class Crocodile extends EntityObject
     @Override
     public void Move()
     {
-        // This will contain a BFS for finding the closest fish
-        // If no fish in adjacent spots (up, down, left, right),
-        // it will pick a spot from all 8 available spaces.
+        // (In the future) This will contain a BFS for finding the closest fish
+        List<GridSpace<EntityObject>> availableSpaces = currentGridSpace.GetAdjacentSpaces((space) ->
+            space.Contains(EntityObjects.FISH), false);
+        System.out.println("Available spaces size:" + availableSpaces.size());
+        if (availableSpaces.isEmpty())
+        {
+            availableSpaces = currentGridSpace.GetAdjacentSpaces(GridSpace::IsEmpty, true);
+            if (!availableSpaces.isEmpty())
+            {
+                GridSpace<EntityObject> space = availableSpaces.get(random.nextInt(availableSpaces.size()));
+                GridManager.ClearGridSpace(currentGridSpace);
+                SetCurrentGridSpace(null);
+                GridManager.FillGridSpace(space, this);
+            }
+        }
+        else
+        {
+            GridSpace<EntityObject> space = availableSpaces.get(random.nextInt(availableSpaces.size()));
+            GridManager.ClearGridSpace(currentGridSpace);
+            SetCurrentGridSpace(null);
+            Consume(space);
+            GridManager.FillGridSpace(space, this);
+        }
+    }
+
+    private void Consume(GridSpace<EntityObject> spotToConsume)
+    {
+        GameEntityManager.GetManager(FISH).Despawn(spotToConsume.GetData());
     }
 
 }

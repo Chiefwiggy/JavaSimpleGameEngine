@@ -15,14 +15,14 @@ public class CoralManager extends AbstractEntityManager
     public void MoveAll() {}
 
     @Override
-    public SpawnBehavior SpawnHow()
+    public SpawnBehavior<?> SpawnHow()
     {
         switch(liveEntities.size())
         {
-            case 0 -> { return new SpawnBehavior(FIXED, new Coordinate<>(4, 4)); }
-            case 1 -> { return new SpawnBehavior(FIXED, new Coordinate<>(4, 5)); }
-            case 2 -> { return new SpawnBehavior(FIXED, new Coordinate<>(5, 4)); }
-            case 3 -> { return new SpawnBehavior(FIXED, new Coordinate<>(5, 5)); }
+            case 0 -> { return new SpawnBehavior<>(FIXED, new Coordinate<>(4, 4)); }
+            case 1 -> { return new SpawnBehavior<>(FIXED, new Coordinate<>(4, 5)); }
+            case 2 -> { return new SpawnBehavior<>(FIXED, new Coordinate<>(5, 4)); }
+            case 3 -> { return new SpawnBehavior<>(FIXED, new Coordinate<>(5, 5)); }
         }
         return null;
     }

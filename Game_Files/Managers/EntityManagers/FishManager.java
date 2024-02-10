@@ -1,6 +1,6 @@
 package Game_Files.Managers.EntityManagers;
 
-import Game_Files.Enums.BoardEntities;
+import Game_Files.Enums.EntityObjects;
 import Game_Files.Factories.FishFactory;
 import Game_Files.Helpers.SpawnBehavior;
 import Game_Files.Managers.GameEntityManager;
@@ -31,11 +31,11 @@ public class FishManager extends AbstractEntityManager
     }
 
     @Override
-    public SpawnBehavior SpawnHow()
+    public SpawnBehavior<?> SpawnHow()
     {
         if (StepManager.GetStepCount() > 0)
         {
-            return new SpawnBehavior(ENTITY_BASED, GameEntityManager.GetManager(BoardEntities.CORAL));
+            return new SpawnBehavior<>(ENTITY_BASED, GameEntityManager.GetManager(EntityObjects.CORAL));
         }
         else { return super.SpawnHow(); }
     }

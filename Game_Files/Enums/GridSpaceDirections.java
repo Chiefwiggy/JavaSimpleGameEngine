@@ -1,6 +1,7 @@
 package Game_Files.Enums;
 
 public enum GridSpaceDirections {
+
     UP_LEFT(-1, -1),
     UP(0, -1),
     UP_RIGHT(1, -1),

@@ -36,7 +36,7 @@ public class Sprite {
     {
         Coordinate<Float> worldCoords = ConvertGridToWorldSpace(gridCoords);
         BufferedImage img = spriteSheet.GetSprite(currentAnimation);
-        g2.drawImage(img, worldCoords.GetX().intValue(), worldCoords.GetY().intValue(),
+        g2.drawImage(img, worldCoords.GetCol().intValue(), worldCoords.GetRow().intValue(),
             width, height, null);
     }
 
@@ -45,9 +45,9 @@ public class Sprite {
         float squareSize = GridManager.GetGridSpaceSize();
         BiFunction<Integer, Integer, Integer> func = (n, spriteDimension) ->
             (int) ((squareSize * n + (squareSize / 2)) - spriteDimension / 2);
-        float worldX = func.apply(gridCoords.GetX(), width);
-        float worldY = func.apply(gridCoords.GetY(), height);
-        return new Coordinate<>(worldY, worldX);
+        float worldRow = func.apply(gridCoords.GetRow(), height);
+        float worldCol = func.apply(gridCoords.GetCol(), width);
+        return new Coordinate<>(worldRow, worldCol);
     }
 
     public void UpdateSprite()

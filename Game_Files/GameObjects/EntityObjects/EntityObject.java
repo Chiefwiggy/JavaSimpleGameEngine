@@ -5,20 +5,25 @@ import Engine.Helpers.*;
 import Engine.Misc.ALARM_ID;
 import Game_Files.GameObjects.GridSpace;
 import Game_Files.Helpers.Sprite;
-import Game_Files.Enums.BoardEntities;
+import Game_Files.Enums.EntityObjects;
 import Game_Files.Interfaces.FactoryObject;
+import Game_Files.Managers.GridManager;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public abstract class EntityObject extends GameObject implements FactoryObject
 {
 
     protected GridSpace<EntityObject> currentGridSpace;
 
-    public BoardEntities species;
+    public EntityObjects species;
 
     protected Sprite sprite;
+
+    protected final Random random = new Random();
 
     public EntityObject() { SetRenderer("pixel"); }
 
@@ -36,7 +41,7 @@ public abstract class EntityObject extends GameObject implements FactoryObject
         currentGridSpace = null;
     }
 
-    public GridSpace<? extends EntityObject> GetCurrentGridSpace() { return currentGridSpace; }
+    public GridSpace<EntityObject> GetCurrentGridSpace() { return currentGridSpace; }
 
     public void SetCurrentGridSpace(GridSpace<EntityObject> gridSpace)
     {
@@ -50,7 +55,15 @@ public abstract class EntityObject extends GameObject implements FactoryObject
 
     public void Move()
     {
-
+        List<GridSpace<EntityObject>> availableSpaces = GetAdjacentSpaces();
+        if (!availableSpaces.isEmpty())
+        {
+            GridSpace<EntityObject> space = availableSpaces.get(random.nextInt(availableSpaces.size()));
+            GridManager.ClearGridSpace(currentGridSpace);
+            SetCurrentGridSpace(null);
+            GridManager.FillGridSpace(space, this);
+            //System.out.println("Fish moved to: " + space.GetGridCoords().toString());
+        }
     }
 
     @Override

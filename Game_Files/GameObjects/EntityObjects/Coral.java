@@ -1,6 +1,6 @@
 package Game_Files.GameObjects.EntityObjects;
 
-import Game_Files.Enums.BoardEntities;
+import Game_Files.Enums.EntityObjects;
 import Game_Files.Helpers.Coordinate;
 import Game_Files.Managers.GridManager;
 
@@ -12,7 +12,7 @@ public class Coral extends EntityObject {
 
     public Coral() {
         super();
-        this.species = BoardEntities.CORAL;
+        this.species = EntityObjects.CORAL;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Coral extends EntityObject {
         g2.setColor(this.color);
         Coordinate<Float> coords = currentGridSpace.GetWorldCoords();
         int squareSize = (int) GridManager.GetGridSpaceSize();
-        g2.fillRect(coords.GetX().intValue(), coords.GetY().intValue(), squareSize, squareSize);
+        g2.fillRect(coords.GetRow().intValue(), coords.GetCol().intValue(), squareSize, squareSize);
     }
 
     @Override
