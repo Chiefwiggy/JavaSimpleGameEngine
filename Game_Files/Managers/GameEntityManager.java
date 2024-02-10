@@ -56,7 +56,7 @@ public class GameEntityManager extends GameObject {
                 {
                     EntityObject entity = entityManager.Spawn();
                     GridManager.FillGridSpace(gridSpace, entity);
-                    System.out.println(entity.species + " Spawned at: " + entity.GetCurrentGridSpace().GetGridCoords().toString());
+                    //System.out.println(entity.species + " Spawned at: " + entity.GetCurrentGridSpace().GetGridCoords().toString());
                 }
             }
             entityManager.ResetHasSpawned();

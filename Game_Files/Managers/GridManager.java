@@ -23,6 +23,7 @@ public class GridManager
     public static void Initialize() { getInstance()._Initialize(); }
 
     public static void PrintGrid() { getInstance()._PrintGrid(); }
+    public static void PrintMap() { getInstance()._PrintMap(); }
 
     //public static float GetGridSize() { return getInstance()._GetGridSize(); }
 
@@ -58,6 +59,8 @@ public class GridManager
 
     public void _PrintGrid() { grid.PrintGrid(); }
 
+    public void _PrintMap() { System.out.println(grid.GetMap().toString()); }
+
     //public int _GetGridSize() { return grid.Size(); }
 
     public float _GetGridSpaceSize() { return (float) worldSize / gridSize; }
@@ -81,8 +84,9 @@ public class GridManager
         int row = coord.GetRow(), col = coord.GetCol();
         if ((row < 0 || row >= gridSize) || (col < 0 || col >= gridSize)) { return null; }
         GridSpace<EntityObject> gridSpace = grid.GetSpace(coord);
-        if (!gridSpace.IsEmpty()) { return null; }
-        else return gridSpace;
+        /*if (!gridSpace.IsEmpty()) { return null; }
+        else */
+        return gridSpace;
     }
 
 }

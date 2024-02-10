@@ -1,11 +1,11 @@
 package Game_Files.Managers.EntityManagers;
 
-import Game_Files.Enums.EntityObjects;
 import Game_Files.Factories.FishFactory;
 import Game_Files.Helpers.SpawnBehavior;
 import Game_Files.Managers.GameEntityManager;
 import Game_Files.Managers.StepManager;
 
+import static Game_Files.Enums.EntityObjects.*;
 import static Game_Files.Enums.SpawnBehaviors.*;
 
 public class FishManager extends AbstractEntityManager
@@ -35,7 +35,7 @@ public class FishManager extends AbstractEntityManager
     {
         if (StepManager.GetStepCount() > 0)
         {
-            return new SpawnBehavior<>(ENTITY_BASED, GameEntityManager.GetManager(EntityObjects.CORAL));
+            return new SpawnBehavior<>(ENTITY_BASED, GameEntityManager.GetManager(CORAL));
         }
         else { return super.SpawnHow(); }
     }

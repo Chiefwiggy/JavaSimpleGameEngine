@@ -2,6 +2,7 @@ package Game_Files.GameObjects.EntityObjects;
 
 import Engine.GameObjects.GameObject;
 import Engine.Helpers.*;
+//import Engine.Managers.EngineManager;
 import Engine.Misc.ALARM_ID;
 import Game_Files.GameObjects.GridSpace;
 import Game_Files.Helpers.Sprite;
@@ -23,6 +24,8 @@ public abstract class EntityObject extends GameObject implements FactoryObject
 
     protected Sprite sprite;
 
+    //protected float x, y, goalX, goalY;
+
     protected final Random random = new Random();
 
     public EntityObject() { SetRenderer("pixel"); }
@@ -31,12 +34,14 @@ public abstract class EntityObject extends GameObject implements FactoryObject
     {
         alarmObject.SubmitAlarmRegistration(CONSTANTS.SECOND/4, ALARM_ID.ALARM_0);
         drawObject.SubmitDrawRegistration();
+        updateObject.SubmitUpdateRegistration();
     }
 
     public void Deinitialize()
     {
         alarmObject.SubmitAlarmDeregistration(ALARM_ID.ALARM_0);
         drawObject.SubmitDrawDeregistration();
+        updateObject.SubmitUpdateDeregistration();
         currentGridSpace.RemoveData();
         currentGridSpace = null;
     }
@@ -62,15 +67,28 @@ public abstract class EntityObject extends GameObject implements FactoryObject
             GridManager.ClearGridSpace(currentGridSpace);
             SetCurrentGridSpace(null);
             GridManager.FillGridSpace(space, this);
-            //System.out.println("Fish moved to: " + space.GetGridCoords().toString());
         }
     }
 
     @Override
     public void GameDraw(Graphics2D g2)
     {
-        sprite.DrawSprite(g2, currentGridSpace.GetGridCoords());
+        if (currentGridSpace != null)
+        {
+            sprite.DrawSprite(g2, currentGridSpace.GetGridCoords());
+        }
     }
+
+    /*@Override
+    public void GameUpdate()
+    {
+        if ((int)goalX != (int)x) {
+            x += Math.signum(goalX - x)*Math.min(90f * EngineManager.GetDeltaTime(), Math.abs(goalX - x));
+        }
+        if ((int)goalY != (int)y) {
+            y += Math.signum(goalY - y)*Math.min(90f * EngineManager.GetDeltaTime(), Math.abs(goalY - y));
+        }
+    }*/
 
     @Override
     public void GameAlarm0()

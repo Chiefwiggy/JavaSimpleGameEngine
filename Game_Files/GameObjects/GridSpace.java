@@ -59,8 +59,8 @@ public class GridSpace<T> extends GameObject implements FactoryObject
 
     public boolean Contains(EntityObjects entityType)
     {
-        System.out.println("HERE");
-        if (data != null) { System.out.println(((EntityObject) data).species.toString()); }
+        //System.out.println("HERE: " + this.data.toString());
+        //if (data != null) { System.out.println(((EntityObject) data).species.toString()); }
         return data != null && ((EntityObject) data).species == entityType;
     }
 
@@ -79,7 +79,7 @@ public class GridSpace<T> extends GameObject implements FactoryObject
             int rowCheck = gridCoords.GetRow() + direction.yInc;
             int colCheck = gridCoords.GetCol() + direction.xInc;
             Coordinate<Integer> coord = new Coordinate<>(rowCheck, colCheck);
-            System.out.println("Checking coord: ( Row: " + rowCheck + ", Col: " + colCheck + " )");
+            //System.out.println("Checking coord: ( Row: " + rowCheck + ", Col: " + colCheck + " )");
             GridSpace<EntityObject> check = GridManager.GetGridSpace(coord);
             if (check != null && condition.test(check))
             {

@@ -22,7 +22,7 @@ public class TwoDimensionalGrid<T> {
         availableSpaces = new AdjacencyMap<>();
         gridSpaceFactory = new GridSpaceFactory();
         InitializeGrid(gridSize);
-        PrintGrid();
+        //PrintGrid();
     }
 
     private void InitializeGrid(int gridSize)
@@ -59,7 +59,7 @@ public class TwoDimensionalGrid<T> {
 
     public GridSpace<T> GetRandomSpace()
     {
-        System.out.println(availableSpaces.toString());
+        //System.out.println(availableSpaces.toString());
         Object[] randomValues = availableSpaces.GetRandom();
         return GetSpace(new Coordinate<>((int) randomValues[0], (int) randomValues[1]));
     }
@@ -76,5 +76,7 @@ public class TwoDimensionalGrid<T> {
             }
         }
     }
+
+    public AdjacencyMap<Integer, Integer> GetMap() { return availableSpaces; }
 
 }

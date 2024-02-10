@@ -29,6 +29,7 @@ public abstract class AbstractEntityManager extends GameObject {
 
     public void Despawn(EntityObject entity)
     {
+        //System.out.println(entity);
         liveEntities.remove(entity);
         factory.RecycleEntity(entity);
     }

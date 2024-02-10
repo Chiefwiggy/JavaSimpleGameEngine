@@ -1,5 +1,7 @@
 package Game_Files.Managers;
 
+import Game_Files.Helpers.Coordinate;
+
 public class GameManager
 {
 
@@ -21,12 +23,13 @@ public class GameManager
         StepManager.Initialize();
         GridManager.Initialize();
         GameEntityManager.Initialize();
-        GridManager.PrintGrid();
+        //GridManager.PrintGrid();
     }
 
     private void _Step()
     {
         System.out.println("Step: " + StepManager.GetStepCount());
+        //System.out.println(GridManager.GetGridSpace(new Coordinate<>(0, 0)).toString());
         GameEntityManager.SpawnEntities();
         GameEntityManager.MoveAll();
     }
